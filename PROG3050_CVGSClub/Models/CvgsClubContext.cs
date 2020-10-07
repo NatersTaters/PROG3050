@@ -4,23 +4,23 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace PROG3050_CVGSClub.Models
 {
-    public partial class CvgsClubContext : DbContext
+    public partial class CVGSClubContext : DbContext
     {
-        public CvgsClubContext()
+        public CVGSClubContext()
         {
         }
 
-        public CvgsClubContext(DbContextOptions<CvgsClubContext> options)
+        public CVGSClubContext(DbContextOptions<CVGSClubContext> options)
             : base(options)
         {
         }
 
         public virtual DbSet<Addresses> Addresses { get; set; }
         public virtual DbSet<Events> Events { get; set; }
+        public virtual DbSet<FriendsFamily> FriendsFamily { get; set; }
         public virtual DbSet<Games> Games { get; set; }
         public virtual DbSet<Members> Members { get; set; }
-
-        // Unable to generate entity type for table 'dbo.wish_lists'. Please see the warning messages.
+        public virtual DbSet<WishLists> WishLists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -91,8 +91,6 @@ namespace PROG3050_CVGSClub.Models
 
                 entity.ToTable("events");
 
-                entity.Property(e => e.MemberId).HasColumnName("member_id");
-
                 entity.Property(e => e.EventId).HasColumnName("event_id");
 
                 entity.Property(e => e.Capacity).HasColumnName("capacity");
@@ -103,13 +101,34 @@ namespace PROG3050_CVGSClub.Models
                     .HasColumnName("event_date")
                     .HasColumnType("date");
 
+                entity.Property(e => e.MemberId).HasColumnName("member_id");
+
                 entity.Property(e => e.StartTime).HasColumnName("start_time");
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.Events)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("addresses_fk_members");
+                    .HasConstraintName("events_fk_members");
+            });
+
+            modelBuilder.Entity<FriendsFamily>(entity =>
+            {
+                entity.HasKey(e => e.FriendFamilyId);
+
+                entity.ToTable("friends_family");
+
+                entity.Property(e => e.FriendFamilyId).HasColumnName("friend_family_id");
+
+                entity.Property(e => e.FriendId).HasColumnName("friend_id");
+
+                entity.Property(e => e.MemberId).HasColumnName("member_id");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.FriendsFamily)
+                    .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("friends_family_fk_members");
             });
 
             modelBuilder.Entity<Games>(entity =>
@@ -119,7 +138,7 @@ namespace PROG3050_CVGSClub.Models
                 entity.ToTable("games");
 
                 entity.HasIndex(e => e.GameName)
-                    .HasName("UQ__games__CDFC05C4C1E64D0B")
+                    .HasName("UQ__games__CDFC05C47E9DD9C1")
                     .IsUnique();
 
                 entity.Property(e => e.GameId).HasColumnName("game_id");
@@ -167,11 +186,11 @@ namespace PROG3050_CVGSClub.Models
                 entity.ToTable("members");
 
                 entity.HasIndex(e => e.DisplayName)
-                    .HasName("UQ__members__2C5758760447557D")
+                    .HasName("UQ__members__2C57587625ECE929")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Email)
-                    .HasName("UQ__members__AB6E6164FA87D6EC")
+                    .HasName("UQ__members__AB6E6164DC372CCE")
                     .IsUnique();
 
                 entity.Property(e => e.MemberId).HasColumnName("member_id");
@@ -237,6 +256,32 @@ namespace PROG3050_CVGSClub.Models
 
                 entity.Property(e => e.ShippingAddressId).HasColumnName("shipping_address_id");
             });
+
+            modelBuilder.Entity<WishLists>(entity =>
+            {
+                entity.HasKey(e => e.WishId);
+
+                entity.ToTable("wish_lists");
+
+                entity.Property(e => e.WishId).HasColumnName("wish_id");
+
+                entity.Property(e => e.GameId).HasColumnName("game_id");
+
+                entity.Property(e => e.MemberId).HasColumnName("member_id");
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.WishLists)
+                    .HasForeignKey(d => d.GameId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("wish_lists_fk_games");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.WishLists)
+                    .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("wish_lists_fk_members");
+            });
         }
     }
 }
+
