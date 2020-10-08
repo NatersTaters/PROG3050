@@ -8,6 +8,9 @@ namespace PROG3050_CVGSClub.Models
         public Members()
         {
             Addresses = new HashSet<Addresses>();
+            Events = new HashSet<Events>();
+            FriendsFamily = new HashSet<FriendsFamily>();
+            WishLists = new HashSet<WishLists>();
         }
 
         public int MemberId { get; set; }
@@ -27,5 +30,7 @@ namespace PROG3050_CVGSClub.Models
 
         public ICollection<Addresses> Addresses { get; set; }
         public ICollection<Events> Events { get; set; }
+        public ICollection<FriendsFamily> FriendsFamily { get; set; }
+        public ICollection<WishLists> WishLists { get; set; }
     }
 }

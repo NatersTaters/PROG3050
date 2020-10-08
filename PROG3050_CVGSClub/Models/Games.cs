@@ -5,6 +5,11 @@ namespace PROG3050_CVGSClub.Models
 {
     public partial class Games
     {
+        public Games()
+        {
+            WishLists = new HashSet<WishLists>();
+        }
+
         public int GameId { get; set; }
         public string GameName { get; set; }
         public decimal ListPrice { get; set; }
@@ -12,5 +17,7 @@ namespace PROG3050_CVGSClub.Models
         public string Genre { get; set; }
         public string AvailablePlatforms { get; set; }
         public string MaxPlayers { get; set; }
+
+        public ICollection<WishLists> WishLists { get; set; }
     }
 }
