@@ -72,7 +72,7 @@ namespace PROG3050_CVGSClub
 			{
 				routes.MapRoute(
 					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
+					template: "{controller=MembersCreate}/{action=Login}/{id?}");
 			});
 		}
 	}
