@@ -37,7 +37,7 @@ namespace PROG3050_CVGSClub
 
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(
-					Configuration.GetConnectionString("CvgsClubConnection")));
+					Configuration.GetConnectionString("DefaultConnection")));
 
 			// **context - enable dependency injection for context of cvgs_club database
 			services.AddDbContext<CVGSClubContext>(options =>
@@ -81,7 +81,7 @@ namespace PROG3050_CVGSClub
 			{
 				routes.MapRoute(
 					name: "default",
-					template: "{controller=MembersCreate}/{action=Login}/{id?}");
+					template: "{controller=Home}/{action=Index}/{id?}");
 			});
 		}
 	}
