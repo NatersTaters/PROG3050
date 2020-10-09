@@ -37,10 +37,12 @@ namespace PROG3050_CVGSClub
 
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(
-					Configuration.GetConnectionString("DefaultConnection")));
+					Configuration.GetConnectionString("CvgsClubConnection")));
 
 			// **context - enable dependency injection for context of cvgs_club database
-			services.AddDbContext<CVGSClubContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("CvgsClubConnection")));
+			services.AddDbContext<CVGSClubContext>(options =>
+				options.UseSqlServer(
+					Configuration.GetConnectionString("CvgsClubConnection")));
 
 			services.AddDefaultIdentity<IdentityUser>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();

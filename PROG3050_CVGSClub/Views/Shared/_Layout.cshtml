@@ -1,6 +1,4 @@
-﻿@model IEnumerable<PROG3050_CVGSClub.Models.Members>
-
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 
 <!DOCTYPE html>
 <html>
@@ -39,6 +37,7 @@
 					<li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
 					<li><a asp-area="" asp-controller="MembersCreate" asp-action="Create">Create</a></li>
 				</ul>
+				<partial name="_LoginPartial" />
 			</div>
 		</div>
 	</nav>
