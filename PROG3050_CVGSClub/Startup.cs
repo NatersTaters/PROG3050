@@ -46,6 +46,10 @@ namespace PROG3050_CVGSClub
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+			// Add support for session variables
+			services.AddDistributedMemoryCache(); 
+			services.AddSession();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +71,9 @@ namespace PROG3050_CVGSClub
 			app.UseCookiePolicy();
 
 			app.UseAuthentication();
+
+			//Initialize Session
+			app.UseSession();
 
 			app.UseMvc(routes =>
 			{

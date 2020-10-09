@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PROG3050_CVGSClub.Models;
@@ -155,14 +157,30 @@ namespace PROG3050_CVGSClub.Controllers
         public IActionResult Login(Members members)
 		{
             var _member = db.Members.Where(s => s.DisplayName == members.DisplayName);
-            if (_member.Where(s => s.Password == members.Password).Any())
-            {
-                return RedirectToAction(nameof(HomeController.Index));
-            }
-            else
+
+            if (members.DisplayName == null || members.Password == null)
             {
                 return View();
             }
-        }
+            else
+			{
+                if (_member.Where(s => s.Password == members.Password).Any())
+                {
+                    //HttpContext.Session.SetInt32(nameof(members.DisplayName), members.MemberId);
+                    //HttpContext.Session.SetString("displayName", members.DisplayName);
+                    //HttpContext.Session.SetString("memberPassword", members.Password);
+
+                    //string url = string.Format("/Home/Index?id={0}", members.MemberId);
+
+                    string id = HttpContext.User.Identity.Name;
+
+                    return Redirect($"/Home/Index?id={id}");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+		}
     }
 }
