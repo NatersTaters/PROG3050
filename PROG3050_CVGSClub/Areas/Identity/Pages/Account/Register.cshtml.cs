@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using PROG3050_CVGSClub.Controllers;
+using PROG3050_CVGSClub.Models;
 
 namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account
 {
@@ -19,6 +21,8 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+
+        private CVGSClubContext context = new CVGSClubContext();
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -83,7 +87,30 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+
+                    TempData["email"] = Input.Email;
+                    TempData["password"] = Input.Password;
+
+                    Members members = new Members();
+
+					members.DisplayName = "";
+					members.FirstName = "";
+					members.LastName = "";
+					members.Email = Input.Email;
+					members.Password = Input.Password;
+					members.Gender = "";
+					members.BirthDate = null;
+					members.ReceiveEmails = false;
+					members.MailingAddressId = 0;
+					members.ShippingAddressId = 0;
+					members.CardType = "";
+					members.CardNumber = "";
+					members.CardExpires = "";
+
+                    var createMember = new CreateMembersController(context);
+                    await createMember.Create(members);
+
+					return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)
                 {

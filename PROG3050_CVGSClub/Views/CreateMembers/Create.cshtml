@@ -4,26 +4,31 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create a new account</h2>
+<h2>Create</h2>
 
-<h4>Please enter your new account details below</h4>
+<h4>Members</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
 		<form asp-action="Create">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
-				<label asp-for="DisplayName" class="control-label">Display Name</label>
+				<label asp-for="MemberId" class="control-label"></label>
+				<input asp-for="MemberId" class="form-control" />
+				<span asp-validation-for="MemberId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DisplayName" class="control-label"></label>
 				<input asp-for="DisplayName" class="form-control" />
 				<span asp-validation-for="DisplayName" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="FirstName" class="control-label">First Name</label>
+				<label asp-for="FirstName" class="control-label"></label>
 				<input asp-for="FirstName" class="form-control" />
 				<span asp-validation-for="FirstName" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="LastName" class="control-label">Last Name</label>
+				<label asp-for="LastName" class="control-label"></label>
 				<input asp-for="LastName" class="form-control" />
 				<span asp-validation-for="LastName" class="text-danger"></span>
 			</div>
@@ -32,11 +37,6 @@
 				<input asp-for="Email" class="form-control" />
 				<span asp-validation-for="Email" class="text-danger"></span>
 			</div>
-		<!--<div class="form-group">
-				<label asp-for="ReceiveEmails" class="control-label"></label>
-				<select asp-for="ReceiveEmails" class="form-control" asp-items="ViewBag.ReceiveEmails"></select>
-				<span asp-validation-for="ReceiveEmails" class="text-danger"></span>
-			</div>-->
 			<div class="form-group">
 				<label asp-for="Password" class="control-label"></label>
 				<input asp-for="Password" class="form-control" />
@@ -52,7 +52,7 @@
 				<input asp-for="BirthDate" class="form-control" />
 				<span asp-validation-for="BirthDate" class="text-danger"></span>
 			</div>
-			<!--<div class="form-group">
+			<div class="form-group">
 				<label asp-for="MailingAddressId" class="control-label"></label>
 				<input asp-for="MailingAddressId" class="form-control" />
 				<span asp-validation-for="MailingAddressId" class="text-danger"></span>
@@ -61,7 +61,7 @@
 				<label asp-for="ShippingAddressId" class="control-label"></label>
 				<input asp-for="ShippingAddressId" class="form-control" />
 				<span asp-validation-for="ShippingAddressId" class="text-danger"></span>
-			</div>-->
+			</div>
 			<div class="form-group">
 				<label asp-for="CardType" class="control-label"></label>
 				<input asp-for="CardType" class="form-control" />
@@ -88,6 +88,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

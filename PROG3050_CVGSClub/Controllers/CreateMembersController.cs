@@ -2,33 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PROG3050_CVGSClub.Models;
 
 namespace PROG3050_CVGSClub.Controllers
 {
-    public class MembersCreateController : Controller
+    public class CreateMembersController : Controller
     {
         private readonly CVGSClubContext _context;
 
-        CVGSClubContext db = new CVGSClubContext();
-
-        public MembersCreateController(CVGSClubContext context)
+        public CreateMembersController(CVGSClubContext context)
         {
             _context = context;
         }
 
-        // GET: MembersCreate
-        public async Task<IActionResult> Index()
+		// GET: CreateMembers
+		public async Task<IActionResult> Index()
         {
             return View(await _context.Members.ToListAsync());
         }
 
-        // GET: MembersCreate/Details/5
+        // GET: CreateMembers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,13 +42,13 @@ namespace PROG3050_CVGSClub.Controllers
             return View(members);
         }
 
-        // GET: MembersCreate/Create
+        // GET: CreateMembers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: MembersCreate/Create
+        // POST: CreateMembers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -68,7 +64,7 @@ namespace PROG3050_CVGSClub.Controllers
             return View(members);
         }
 
-        // GET: MembersCreate/Edit/5
+        // GET: CreateMembers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,7 +80,7 @@ namespace PROG3050_CVGSClub.Controllers
             return View(members);
         }
 
-        // POST: MembersCreate/Edit/5
+        // POST: CreateMembers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -119,7 +115,7 @@ namespace PROG3050_CVGSClub.Controllers
             return View(members);
         }
 
-        // GET: MembersCreate/Delete/5
+        // GET: CreateMembers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,7 +133,7 @@ namespace PROG3050_CVGSClub.Controllers
             return View(members);
         }
 
-        // POST: MembersCreate/Delete/5
+        // POST: CreateMembers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -152,35 +148,5 @@ namespace PROG3050_CVGSClub.Controllers
         {
             return _context.Members.Any(e => e.MemberId == id);
         }
-
-        // Allows the user to login with an existing account
-        public IActionResult Login(Members members)
-		{
-            var _member = db.Members.Where(s => s.DisplayName == members.DisplayName);
-
-            if (members.DisplayName == null || members.Password == null)
-            {
-                return View();
-            }
-            else
-			{
-                if (_member.Where(s => s.Password == members.Password).Any())
-                {
-                    //HttpContext.Session.SetInt32(nameof(members.DisplayName), members.MemberId);
-                    //HttpContext.Session.SetString("displayName", members.DisplayName);
-                    //HttpContext.Session.SetString("memberPassword", members.Password);
-
-                    //string url = string.Format("/Home/Index?id={0}", members.MemberId);
-
-                    string id = HttpContext.User.Identity.Name;
-
-                    return Redirect($"/Home/Index?id={id}");
-                }
-                else
-                {
-                    return View();
-                }
-            }
-		}
     }
 }
