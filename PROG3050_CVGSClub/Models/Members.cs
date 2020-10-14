@@ -13,7 +13,7 @@ namespace PROG3050_CVGSClub.Models
             WishLists = new HashSet<WishLists>();
         }
 
-        public int MemberId { get; set; }
+        public string MemberId { get; set; }
         public string DisplayName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

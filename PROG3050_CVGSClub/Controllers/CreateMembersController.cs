@@ -18,14 +18,14 @@ namespace PROG3050_CVGSClub.Controllers
             _context = context;
         }
 
-		// GET: CreateMembers
-		public async Task<IActionResult> Index()
+        // GET: CreateMembers
+        public async Task<IActionResult> Index()
         {
             return View(await _context.Members.ToListAsync());
         }
 
         // GET: CreateMembers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -65,7 +65,7 @@ namespace PROG3050_CVGSClub.Controllers
         }
 
         // GET: CreateMembers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -85,7 +85,7 @@ namespace PROG3050_CVGSClub.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemberId,DisplayName,FirstName,LastName,Email,Password,Gender,BirthDate,ReceiveEmails,MailingAddressId,ShippingAddressId,CardType,CardNumber,CardExpires")] Members members)
+        public async Task<IActionResult> Edit(string id, [Bind("MemberId,DisplayName,FirstName,LastName,Email,Password,Gender,BirthDate,ReceiveEmails,MailingAddressId,ShippingAddressId,CardType,CardNumber,CardExpires")] Members members)
         {
             if (id != members.MemberId)
             {
@@ -116,7 +116,7 @@ namespace PROG3050_CVGSClub.Controllers
         }
 
         // GET: CreateMembers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -136,7 +136,7 @@ namespace PROG3050_CVGSClub.Controllers
         // POST: CreateMembers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var members = await _context.Members.FindAsync(id);
             _context.Members.Remove(members);
@@ -144,7 +144,7 @@ namespace PROG3050_CVGSClub.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MembersExists(int id)
+        private bool MembersExists(string id)
         {
             return _context.Members.Any(e => e.MemberId == id);
         }

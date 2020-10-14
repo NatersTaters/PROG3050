@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using PROG3050_CVGSClub.Controllers;
+using PROG3050_CVGSClub.Models;
+
 namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
@@ -14,6 +17,10 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
+
+        // In order to retrieve the details of the member object that is currently signed in, we must work with
+        // the context object of the database, here it's being declared for use within the class
+        private CVGSClubContext context = new CVGSClubContext();
 
         public ChangePasswordModel(
             UserManager<IdentityUser> userManager,
@@ -89,6 +96,17 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
                 }
                 return Page();
             }
+
+            // Retrieves the details for the member object that is signed with the GetUserId method of the Identity _userManager
+            var members = await context.Members.FindAsync(_userManager.GetUserId(User));
+
+            // Sets the member password to the user input of the NewPassword Field
+            members.Password = Input.NewPassword;
+
+            // Calls on the Edit POST Method of the CreateMembersController and supplies it with the userId and the current member 
+            // object with the changed password
+            var createMember = new CreateMembersController(context);
+            await createMember.Edit(_userManager.GetUserId(User), members);
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");

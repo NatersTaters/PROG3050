@@ -22,6 +22,8 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+        // In order to retrieve the details of the member object that is currently signed in, we must work with
+        // the context object of the database, here it's being declared for use within the class
         private CVGSClubContext context = new CVGSClubContext();
 
         public RegisterModel(
@@ -43,6 +45,10 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            [Display(Name = "Username")]
+            public string Username { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -70,43 +76,24 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new IdentityUser { UserName = Input.Username, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    TempData["email"] = Input.Email;
-                    TempData["password"] = Input.Password;
-
+                    // Create a new member object and sets all fields to their default null values, except for MemberId which is being given the id
+                    // of the user object in the localDB database, the Email which is being given the user input for the Email, and the Password
+                    // which is being given the user input for Password
                     Members members = new Members();
-
-					members.DisplayName = "";
-					members.FirstName = "";
-					members.LastName = "";
-					members.Email = Input.Email;
+                    members.MemberId = user.Id;
+					members.DisplayName = Input.Username;
+                    members.Email = Input.Email;
 					members.Password = Input.Password;
-					members.Gender = "";
-					members.BirthDate = null;
-					members.ReceiveEmails = false;
-					members.MailingAddressId = 0;
-					members.ShippingAddressId = 0;
-					members.CardType = "";
-					members.CardNumber = "";
-					members.CardExpires = "";
 
+                    // Calls upon the Create POST Method of the CreateMembersController and supplies it with the new member object
                     var createMember = new CreateMembersController(context);
                     await createMember.Create(members);
 

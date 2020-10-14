@@ -6,7 +6,7 @@ namespace PROG3050_CVGSClub.Models
     public partial class Addresses
     {
         public int AddressId { get; set; }
-        public int MemberId { get; set; }
+        public string MemberId { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string City { get; set; }
