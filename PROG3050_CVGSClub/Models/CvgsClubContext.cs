@@ -18,7 +18,9 @@ namespace PROG3050_CVGSClub.Models
         public virtual DbSet<Addresses> Addresses { get; set; }
         public virtual DbSet<Events> Events { get; set; }
         public virtual DbSet<FriendsFamily> FriendsFamily { get; set; }
+        public virtual DbSet<GameReviews> GameReviews { get; set; }
         public virtual DbSet<Games> Games { get; set; }
+        public virtual DbSet<MemberEvents> MemberEvents { get; set; }
         public virtual DbSet<Members> Members { get; set; }
         public virtual DbSet<WishLists> WishLists { get; set; }
 
@@ -58,7 +60,11 @@ namespace PROG3050_CVGSClub.Models
                     .HasMaxLength(60)
                     .IsUnicode(false);
 
-                entity.Property(e => e.MemberId).HasColumnName("member_id");
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasColumnName("member_id")
+                    .HasMaxLength(60)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Phone)
                     .IsRequired()
@@ -101,15 +107,13 @@ namespace PROG3050_CVGSClub.Models
                     .HasColumnName("event_date")
                     .HasColumnType("date");
 
-                entity.Property(e => e.MemberId).HasColumnName("member_id");
+                entity.Property(e => e.EventName)
+                    .IsRequired()
+                    .HasColumnName("event_name")
+                    .HasMaxLength(60)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.StartTime).HasColumnName("start_time");
-
-                entity.HasOne(d => d.Member)
-                    .WithMany(p => p.Events)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("events_fk_members");
             });
 
             modelBuilder.Entity<FriendsFamily>(entity =>
@@ -120,15 +124,58 @@ namespace PROG3050_CVGSClub.Models
 
                 entity.Property(e => e.FriendFamilyId).HasColumnName("friend_family_id");
 
-                entity.Property(e => e.FriendId).HasColumnName("friend_id");
+                entity.Property(e => e.FriendId)
+                    .IsRequired()
+                    .HasColumnName("friend_id")
+                    .HasMaxLength(60)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.MemberId).HasColumnName("member_id");
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasColumnName("member_id")
+                    .HasMaxLength(60)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.FriendsFamily)
                     .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("friends_family_fk_members");
+            });
+
+            modelBuilder.Entity<GameReviews>(entity =>
+            {
+                entity.HasKey(e => e.ReviewId);
+
+                entity.ToTable("gameReviews");
+
+                entity.Property(e => e.ReviewId).HasColumnName("review_id");
+
+                entity.Property(e => e.GameId).HasColumnName("game_id");
+
+                entity.Property(e => e.GameReview)
+                    .IsRequired()
+                    .HasColumnName("game_review")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasColumnName("member_id")
+                    .HasMaxLength(60)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.GameReviews)
+                    .HasForeignKey(d => d.GameId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("gameReviews_fk_games");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.GameReviews)
+                    .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("gameReviews_fk_members");
             });
 
             modelBuilder.Entity<Games>(entity =>
@@ -138,7 +185,7 @@ namespace PROG3050_CVGSClub.Models
                 entity.ToTable("games");
 
                 entity.HasIndex(e => e.GameName)
-                    .HasName("UQ__games__CDFC05C47E9DD9C1")
+                    .HasName("UQ__games__CDFC05C467558BA2")
                     .IsUnique();
 
                 entity.Property(e => e.GameId).HasColumnName("game_id");
@@ -179,21 +226,46 @@ namespace PROG3050_CVGSClub.Models
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<MemberEvents>(entity =>
+            {
+                entity.HasKey(e => e.EventId);
+
+                entity.ToTable("memberEvents");
+
+                entity.Property(e => e.EventId)
+                    .HasColumnName("event_id")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasColumnName("member_id")
+                    .HasMaxLength(60)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Event)
+                    .WithOne(p => p.MemberEvents)
+                    .HasForeignKey<MemberEvents>(d => d.EventId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("events_fk_events");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.MemberEvents)
+                    .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("events_fk_members");
+            });
+
             modelBuilder.Entity<Members>(entity =>
             {
                 entity.HasKey(e => e.MemberId);
 
                 entity.ToTable("members");
 
-                entity.HasIndex(e => e.DisplayName)
-                    .HasName("UQ__members__2C57587625ECE929")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Email)
-                    .HasName("UQ__members__AB6E6164DC372CCE")
-                    .IsUnique();
-
-                entity.Property(e => e.MemberId).HasColumnName("member_id");
+                entity.Property(e => e.MemberId)
+                    .HasColumnName("member_id")
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.BirthDate)
                     .HasColumnName("birth_date")
@@ -215,18 +287,17 @@ namespace PROG3050_CVGSClub.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.DisplayName)
-                    .IsRequired()
                     .HasColumnName("display_name")
                     .HasMaxLength(60)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email)
+                    .IsRequired()
                     .HasColumnName("email")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FirstName)
-                    .IsRequired()
                     .HasColumnName("first_name")
                     .HasMaxLength(60)
                     .IsUnicode(false);
@@ -237,7 +308,6 @@ namespace PROG3050_CVGSClub.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.LastName)
-                    .IsRequired()
                     .HasColumnName("last_name")
                     .HasMaxLength(60)
                     .IsUnicode(false);
@@ -267,7 +337,11 @@ namespace PROG3050_CVGSClub.Models
 
                 entity.Property(e => e.GameId).HasColumnName("game_id");
 
-                entity.Property(e => e.MemberId).HasColumnName("member_id");
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasColumnName("member_id")
+                    .HasMaxLength(60)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Game)
                     .WithMany(p => p.WishLists)
