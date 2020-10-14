@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using PROG3050_CVGSClub.Controllers;
+using PROG3050_CVGSClub.Models;
 
 namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
 {
@@ -13,6 +15,10 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
+
+        // In order to retrieve the details of the member object that is currently signed in, we must work with
+        // the context object of the database, here it's being declared for use within the class
+        private CVGSClubContext context = new CVGSClubContext();
 
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
@@ -68,6 +74,14 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
 
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
+
+            // Retrieves the details for the member object that is signed inwith the GetUserId method of the Identity _userManager
+            var userIdForMembers = await _userManager.GetUserIdAsync(user);
+            var members = await context.Members.FindAsync(userIdForMembers);
+
+            var createMember = new CreateMembersController(context);
+            await createMember.DeleteConfirmed(_userManager.GetUserId(User));
+
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleteing user with ID '{userId}'.");
