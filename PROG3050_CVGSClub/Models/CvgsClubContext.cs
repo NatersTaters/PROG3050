@@ -20,6 +20,7 @@ namespace PROG3050_CVGSClub.Models
         public virtual DbSet<FriendsFamily> FriendsFamily { get; set; }
         public virtual DbSet<GameReviews> GameReviews { get; set; }
         public virtual DbSet<Games> Games { get; set; }
+        public virtual DbSet<GamesLibrary> GamesLibrary { get; set; }
         public virtual DbSet<MemberEvents> MemberEvents { get; set; }
         public virtual DbSet<Members> Members { get; set; }
         public virtual DbSet<WishLists> WishLists { get; set; }
@@ -185,7 +186,7 @@ namespace PROG3050_CVGSClub.Models
                 entity.ToTable("games");
 
                 entity.HasIndex(e => e.GameName)
-                    .HasName("UQ__games__CDFC05C467558BA2")
+                    .HasName("UQ__games__CDFC05C4A3EFBBDA")
                     .IsUnique();
 
                 entity.Property(e => e.GameId).HasColumnName("game_id");
@@ -224,6 +225,35 @@ namespace PROG3050_CVGSClub.Models
                     .HasColumnName("max_players")
                     .HasMaxLength(25)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<GamesLibrary>(entity =>
+            {
+                entity.HasKey(e => e.LibraryGameId);
+
+                entity.ToTable("gamesLibrary");
+
+                entity.Property(e => e.LibraryGameId).HasColumnName("libraryGame_id");
+
+                entity.Property(e => e.GameId).HasColumnName("game_id");
+
+                entity.Property(e => e.MemberId)
+                    .IsRequired()
+                    .HasColumnName("member_id")
+                    .HasMaxLength(60)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Game)
+                    .WithMany(p => p.GamesLibrary)
+                    .HasForeignKey(d => d.GameId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("gamesLibrary_fk_games");
+
+                entity.HasOne(d => d.Member)
+                    .WithMany(p => p.GamesLibrary)
+                    .HasForeignKey(d => d.MemberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("gamesLibrary_fk_members");
             });
 
             modelBuilder.Entity<MemberEvents>(entity =>

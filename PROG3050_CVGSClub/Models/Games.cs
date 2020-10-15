@@ -20,6 +20,7 @@ namespace PROG3050_CVGSClub.Models
         public string MaxPlayers { get; set; }
 
         public ICollection<GameReviews> GameReviews { get; set; }
+        public ICollection<GamesLibrary> GamesLibrary { get; set; }
         public ICollection<WishLists> WishLists { get; set; }
     }
 }
