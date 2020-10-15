@@ -10,9 +10,9 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="MemberId" class="control-label"></label>
-                <select asp-for="MemberId" class ="form-control" asp-items="ViewBag.MemberId" disabled></select>
+                <select asp-for="MemberId" class ="form-control" asp-items="ViewBag.MemberId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="EventDate" class="control-label"></label>
