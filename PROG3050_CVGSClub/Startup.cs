@@ -40,12 +40,18 @@ namespace PROG3050_CVGSClub
 					Configuration.GetConnectionString("DefaultConnection")));
 
 			// **context - enable dependency injection for context of cvgs_club database
-			services.AddDbContext<CVGSClubContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("CvgsClubConnection")));
+			services.AddDbContext<CVGSClubContext>(options =>
+				options.UseSqlServer(
+					Configuration.GetConnectionString("CvgsClubConnection")));
 
 			services.AddDefaultIdentity<IdentityUser>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+			// Add support for session variables
+			services.AddDistributedMemoryCache(); 
+			services.AddSession();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +73,9 @@ namespace PROG3050_CVGSClub
 			app.UseCookiePolicy();
 
 			app.UseAuthentication();
+
+			//Initialize Session
+			app.UseSession();
 
 			app.UseMvc(routes =>
 			{

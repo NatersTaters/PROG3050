@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PROG3050_CVGSClub.Models;
 
 namespace PROG3050_CVGSClub.Data
 {
