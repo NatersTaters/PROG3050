@@ -6,10 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\Identity\Services\**" />
-    <Content Remove="Areas\Identity\Services\**" />
-    <EmbeddedResource Remove="Areas\Identity\Services\**" />
-    <None Remove="Areas\Identity\Services\**" />
+    <Content Remove="wwwroot\images\consoles.jpg" />
   </ItemGroup>
 
   <ItemGroup>
