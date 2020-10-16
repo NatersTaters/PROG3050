@@ -18,7 +18,7 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
 
         // In order to retrieve the details of the member object that is currently signed in, we must work with
         // the context object of the database, here it's being declared for use within the class
-        private CVGSClubContext context = new CVGSClubContext();
+        private CvgsClubContext context = new CvgsClubContext();
 
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,

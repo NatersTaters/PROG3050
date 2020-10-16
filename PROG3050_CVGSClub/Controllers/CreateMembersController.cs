@@ -11,15 +11,19 @@ namespace PROG3050_CVGSClub.Controllers
 {
     public class CreateMembersController : Controller
     {
-        private readonly CVGSClubContext _context;
+        private readonly CvgsClubContext _context;
 
-        public CreateMembersController(CVGSClubContext context)
+        public CreateMembersController(CvgsClubContext context)
         {
             _context = context;
         }
 
-        // GET: CreateMembers
-        public async Task<IActionResult> Index()
+		public CreateMembersController()
+		{
+		}
+
+		// GET: CreateMembers
+		public async Task<IActionResult> Index()
         {
             return View(await _context.Members.ToListAsync());
         }
