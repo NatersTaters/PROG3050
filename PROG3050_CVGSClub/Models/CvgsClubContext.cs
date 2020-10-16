@@ -258,9 +258,11 @@ namespace PROG3050_CVGSClub.Models
 
             modelBuilder.Entity<MemberEvents>(entity =>
             {
-                entity.HasKey(e => e.EventId);
+                entity.HasKey(e => e.MemberEventsId);
 
                 entity.ToTable("memberEvents");
+
+                entity.Property(e => e.MemberEventsId).HasColumnName("member_events_id");
 
                 entity.Property(e => e.EventId)
                     .HasColumnName("event_id")
