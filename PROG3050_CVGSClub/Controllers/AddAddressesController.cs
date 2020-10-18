@@ -11,9 +11,9 @@ namespace PROG3050_CVGSClub.Controllers
 {
     public class AddAddressesController : Controller
     {
-        private readonly CVGSClubContext _context;
+        private readonly CvgsClubContext _context;
 
-        public AddAddressesController(CVGSClubContext context)
+        public AddAddressesController(CvgsClubContext context)
         {
             _context = context;
         }

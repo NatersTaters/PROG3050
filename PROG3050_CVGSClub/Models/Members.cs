@@ -10,6 +10,7 @@ namespace PROG3050_CVGSClub.Models
             Addresses = new HashSet<Addresses>();
             FriendsFamily = new HashSet<FriendsFamily>();
             GameReviews = new HashSet<GameReviews>();
+            GamesLibrary = new HashSet<GamesLibrary>();
             MemberEvents = new HashSet<MemberEvents>();
             WishLists = new HashSet<WishLists>();
         }

@@ -8,6 +8,7 @@ namespace PROG3050_CVGSClub.Models
         public Games()
         {
             GameReviews = new HashSet<GameReviews>();
+            GamesLibrary = new HashSet<GamesLibrary>();
             WishLists = new HashSet<WishLists>();
         }
 

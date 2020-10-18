@@ -21,7 +21,7 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
 
         // In order to retrieve the details of the member object that is currently signed in, we must work with
         // the context object of the database, here it's being declared for use within the class
-        private CVGSClubContext context = new CVGSClubContext();
+        private CvgsClubContext context = new CvgsClubContext();
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
@@ -62,27 +62,33 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             public string Username { get; set; }
 
             [Required]
             [EmailAddress]
             public string Email { get; set; }
 
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             public string FirstName { get; set; }
 
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             public string LastName { get; set; }
 
+            [StringLength(1, ErrorMessage = "The {0} must be {1} characters long.")]
             public string Gender { get; set; }
 
             public DateTime BirthDate { get; set; }
 
             public bool ReceiveEmails { get; set; }
 
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             public string CardType { get; set; }
 
+            [StringLength(16, ErrorMessage = "The {0} must be {1} characters long.")]
             public string CardNumber { get; set; }
 
+            [RegularExpression(@"((0[1-9])|(1[02]))/\d{2}")]
             public string CardExpires { get; set; }
         }
 

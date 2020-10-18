@@ -7,7 +7,7 @@ namespace PROG3050_CVGSClub.Models
     {
         public int FriendFamilyId { get; set; }
         public string MemberId { get; set; }
-        public int FriendId { get; set; }
+        public string FriendId { get; set; }
 
         public Members Member { get; set; }
     }

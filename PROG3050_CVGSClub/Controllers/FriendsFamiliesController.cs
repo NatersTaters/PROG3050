@@ -11,9 +11,9 @@ namespace PROG3050_CVGSClub.Controllers
 {
     public class FriendsFamiliesController : Controller
     {
-        private readonly CVGSClubContext _context;
+        private readonly CvgsClubContext _context;
 
-        public FriendsFamiliesController(CVGSClubContext context)
+        public FriendsFamiliesController(CvgsClubContext context)
         {
             _context = context;
         }

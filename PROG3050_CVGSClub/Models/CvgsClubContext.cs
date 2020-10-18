@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace PROG3050_CVGSClub.Models
 {
-    public partial class CVGSClubContext : DbContext
+    public partial class CvgsClubContext : DbContext
     {
-        public CVGSClubContext()
+        public CvgsClubContext()
         {
         }
 
-        public CVGSClubContext(DbContextOptions<CVGSClubContext> options)
+        public CvgsClubContext(DbContextOptions<CvgsClubContext> options)
             : base(options)
         {
         }
@@ -186,7 +186,7 @@ namespace PROG3050_CVGSClub.Models
                 entity.ToTable("games");
 
                 entity.HasIndex(e => e.GameName)
-                    .HasName("UQ__games__CDFC05C4A3EFBBDA")
+                    .HasName("UQ__games__CDFC05C41D7B16F2")
                     .IsUnique();
 
                 entity.Property(e => e.GameId).HasColumnName("game_id");
@@ -258,13 +258,11 @@ namespace PROG3050_CVGSClub.Models
 
             modelBuilder.Entity<MemberEvents>(entity =>
             {
-                entity.HasKey(e => e.EventId);
-
                 entity.ToTable("memberEvents");
 
-                entity.Property(e => e.EventId)
-                    .HasColumnName("event_id")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.MemberEventsId).HasColumnName("member_events_id");
+
+                entity.Property(e => e.EventId).HasColumnName("event_id");
 
                 entity.Property(e => e.MemberId)
                     .IsRequired()
@@ -273,8 +271,8 @@ namespace PROG3050_CVGSClub.Models
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Event)
-                    .WithOne(p => p.MemberEvents)
-                    .HasForeignKey<MemberEvents>(d => d.EventId)
+                    .WithMany(p => p.MemberEvents)
+                    .HasForeignKey(d => d.EventId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("events_fk_events");
 
@@ -388,4 +386,3 @@ namespace PROG3050_CVGSClub.Models
         }
     }
 }
-
