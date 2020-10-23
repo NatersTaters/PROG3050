@@ -28,10 +28,14 @@ namespace PROG3050_CVGSClub
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			// Add support for session variables
+			services.AddDistributedMemoryCache();
+			services.AddSession();
+
 			services.Configure<CookiePolicyOptions>(options =>
 			{
 				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
-				options.CheckConsentNeeded = context => true;
+				options.CheckConsentNeeded = context => false;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
@@ -48,10 +52,6 @@ namespace PROG3050_CVGSClub
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-			// Add support for session variables
-			services.AddDistributedMemoryCache(); 
-			services.AddSession();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,14 +68,13 @@ namespace PROG3050_CVGSClub
 				app.UseHsts();
 			}
 
+			//Initialize Session
+			app.UseSession();
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 
 			app.UseAuthentication();
-
-			//Initialize Session
-			app.UseSession();
 
 			app.UseMvc(routes =>
 			{
