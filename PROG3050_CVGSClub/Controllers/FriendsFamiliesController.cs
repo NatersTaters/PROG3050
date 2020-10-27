@@ -19,124 +19,68 @@ namespace PROG3050_CVGSClub.Controllers
         }
 
         // GET: FriendsFamilies
+        // This just shows all the friends and family
+        // No filter for the member ID yet
         public async Task<IActionResult> Index()
         {
-            var cVGSClubContext = _context.FriendsFamily.Include(f => f.Member);
+            var cVGSClubContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == "1");
             return View(await cVGSClubContext.ToListAsync());
         }
 
         // GET: FriendsFamilies/Details/5
+        // Shows the selected family and friend details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var friendsFamily = await _context.FriendsFamily
                 .Include(f => f.Member)
                 .FirstOrDefaultAsync(m => m.FriendFamilyId == id);
+
             if (friendsFamily == null)
-            {
                 return NotFound();
-            }
 
             return View(friendsFamily);
         }
 
         // GET: FriendsFamilies/Create
+        // Optional: Instead of filtering out all the already added members,
+        // figure out how to leave them on the list, but disable the add button for them
         public async Task<IActionResult> Create()
         {
-            var cVGSClubContext = _context.FriendsFamily.Include(f => f.Member);
-            //ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "DisplayName");
+            var friendContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == "1");
+            var cVGSClubContext = _context.Members.Where(a => friendContext.All(f => f.Member.MemberId != a.MemberId));
+           
             return View(await cVGSClubContext.ToListAsync());
         }
 
-        // POST: FriendsFamilies/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FriendFamilyId,MemberId,FriendId")] FriendsFamily friendsFamily)
+        // [ValidateAntiForgeryToken]
+        // To fix the MemberID and Member problem, the Member CvgsClubContext had to change its foreign key connection
+        // Member now has a foreign connection to the friendID rather than the memberID
+        public async Task<IActionResult> Add(string id, FriendsFamily friendsFamily)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(friendsFamily);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "DisplayName", friendsFamily.MemberId);
-            return View(friendsFamily);
+            friendsFamily.MemberId = "1";
+            friendsFamily.FriendId = id;
+            _context.Add(friendsFamily);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: FriendsFamilies/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var friendsFamily = await _context.FriendsFamily.FindAsync(id);
-            if (friendsFamily == null)
-            {
-                return NotFound();
-            }
-            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "DisplayName", friendsFamily.MemberId);
-            return View(friendsFamily);
-        }
-
-        // POST: FriendsFamilies/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FriendFamilyId,MemberId,FriendId")] FriendsFamily friendsFamily)
-        {
-            if (id != friendsFamily.FriendFamilyId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(friendsFamily);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FriendsFamilyExists(friendsFamily.FriendFamilyId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "DisplayName", friendsFamily.MemberId);
-            return View(friendsFamily);
-        }
 
         // GET: FriendsFamilies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var friendsFamily = await _context.FriendsFamily
                 .Include(f => f.Member)
                 .FirstOrDefaultAsync(m => m.FriendFamilyId == id);
+
             if (friendsFamily == null)
-            {
                 return NotFound();
-            }
 
             return View(friendsFamily);
         }
