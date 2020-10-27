@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PROG3050_CVGSClub.Models.FriendsFamily>
+﻿@model IEnumerable<PROG3050_CVGSClub.Models.Members>
 
 @{
     ViewData["Title"] = "Search for Friend/Family";
@@ -8,32 +8,11 @@
 <hr />
 <input type="text" id="filterInput" onkeyup="FilterTable()" placeholder="Search for names..">
 <hr />
-<!--
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="MemberId" class="control-label"></label>
-                <select asp-for="MemberId" class="form-control" asp-items="ViewBag.MemberId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="FriendId" class="control-label"></label>
-                <input asp-for="FriendId" class="form-control" />
-                <span asp-validation-for="FriendId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
-</div>-->
-
 <table class="table" id="memberTable">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Member)
+                @Html.DisplayNameFor(model => model.DisplayName)
             </th>
             <th></th>
         </tr>
@@ -43,10 +22,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Member.DisplayName)
+                    @Html.DisplayFor(modelItem => item.DisplayName)
                 </td>
                 <td>
-                    <a asp-action="Create" asp-route-id="@item.FriendFamilyId">Add</a>
+                    <a asp-action="Add" asp-route-id="@item.MemberId">Add</a>
                 </td>
             </tr>
         }
@@ -58,14 +37,13 @@
     <a asp-action="Index">Back to Friend List</a>
 </div>
 
-@section Scripts 
+@section Scripts
 {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 <script>
-    function FilterTable()
-    {
+    function FilterTable() {
         var inputId, filterString, tableId, tableRow, tableData, textValue;
 
         tableId = document.getElementById("memberTable");
@@ -73,14 +51,13 @@
         filterString = inputId.value.toUpperCase();
         tableRow = tableId.getElementsByTagName("tr");
 
-        for (i = 0; i < tableRow.length; i++)
-        {
+        for (i = 0; i < tableRow.length; i++) {
             tableData = tableRow[i].getElementsByTagName("td")[0];
             if (tableData) {
                 textValue = tableData.textContent || tableData.innerText;
                 if (textValue.toUpperCase().indexOf(filterString) > -1)
                     tableRow[i].style.display = "";
-                else 
+                else
                     tableRow[i].style.display = "none";
             }
         }
