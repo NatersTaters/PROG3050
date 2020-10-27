@@ -45,9 +45,8 @@ namespace PROG3050_CVGSClub.Controllers
         }
 
         // GET: FriendsFamilies/Create
-        // We will use the session variable to determine the member ID
-        // Then we use this id to filter through the friends and family list
-        // and display only those that are already not on the list
+        // Optional: Instead of filtering out all the already added members,
+        // figure out how to leave them on the list, but disable the add button for them
         public async Task<IActionResult> Create()
         {
             var friendContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == "1");
