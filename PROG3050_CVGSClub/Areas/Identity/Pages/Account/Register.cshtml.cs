@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -94,6 +95,9 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account
                     members.Email = Input.Email;
 					members.Password = Input.Password;
 
+                    // Create a session data object and store the User ID to be used later
+                    HttpContext.Session.SetString("userId", user.Id);
+
                     // Calls upon the Create POST Method of the CreateMembersController and supplies it with the new member object
                     var createMember = new CreateMembersController(context);
                     await createMember.Create(members);
@@ -109,5 +113,5 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-    }
+	}
 }
