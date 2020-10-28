@@ -10,24 +10,24 @@ using Microsoft.AspNetCore.Http;
 
 namespace PROG3050_CVGSClub.Controllers
 {
-    public class MemberEventsController : Controller
+    public class GameReviewsController : Controller
     {
         private readonly CvgsClubContext _context;
 
-        public MemberEventsController(CvgsClubContext context)
+        public GameReviewsController(CvgsClubContext context)
         {
             _context = context;
         }
 
-        // GET: MemberEvents
+        // GET: GameReviews
         public async Task<IActionResult> Index()
         {
             string memberId = HttpContext.Session.GetString("userId");
-            var cvgsClubContext = _context.MemberEvents.Include(m => m.Event).Include(m => m.Member).Where(m => m.MemberId == memberId);
+            var cvgsClubContext = _context.GameReviews.Include(g => g.Game).Include(g => g.Member).Where(m => m.MemberId == memberId);
             return View(await cvgsClubContext.ToListAsync());
         }
 
-        // GET: MemberEvents/Details/5
+        // GET: GameReviews/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,45 +35,46 @@ namespace PROG3050_CVGSClub.Controllers
                 return NotFound();
             }
 
-            var memberEvents = await _context.MemberEvents
-                .Include(m => m.Event)
-                .Include(m => m.Member)
-                .FirstOrDefaultAsync(m => m.MemberEventsId == id);
-            if (memberEvents == null)
+            var gameReviews = await _context.GameReviews
+                .Include(g => g.Game)
+                .Include(g => g.Member)
+                .FirstOrDefaultAsync(m => m.ReviewId == id);
+            if (gameReviews == null)
             {
                 return NotFound();
             }
 
-            return View(memberEvents);
+            return View(gameReviews);
         }
 
-        // GET: MemberEvents/Create
+        // GET: GameReviews/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventName");
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameName");
             ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId");
             return View();
         }
 
-        // POST: MemberEvents/Create
+        // POST: GameReviews/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MemberEventsId,EventId,MemberId")] MemberEvents memberEvents)
+        public async Task<IActionResult> Create([Bind("ReviewId,MemberId,GameId,GameReview")] GameReviews gameReviews)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(memberEvents);
+                gameReviews.MemberId = HttpContext.Session.GetString("userId");
+                _context.Add(gameReviews);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventName", memberEvents.EventId);
-            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId", memberEvents.MemberId);
-            return View(memberEvents);
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameName", gameReviews.GameId);
+            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId", gameReviews.MemberId);
+            return View(gameReviews);
         }
 
-        // GET: MemberEvents/Edit/5
+        // GET: GameReviews/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,24 +82,24 @@ namespace PROG3050_CVGSClub.Controllers
                 return NotFound();
             }
 
-            var memberEvents = await _context.MemberEvents.FindAsync(id);
-            if (memberEvents == null)
+            var gameReviews = await _context.GameReviews.FindAsync(id);
+            if (gameReviews == null)
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventName", memberEvents.EventId);
-            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId", memberEvents.MemberId);
-            return View(memberEvents);
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameName", gameReviews.GameId);
+            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId", gameReviews.MemberId);
+            return View(gameReviews);
         }
 
-        // POST: MemberEvents/Edit/5
+        // POST: GameReviews/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemberEventsId,EventId,MemberId")] MemberEvents memberEvents)
+        public async Task<IActionResult> Edit(int id, [Bind("ReviewId,MemberId,GameId,GameReview")] GameReviews gameReviews)
         {
-            if (id != memberEvents.MemberEventsId)
+            if (id != gameReviews.ReviewId)
             {
                 return NotFound();
             }
@@ -107,12 +108,13 @@ namespace PROG3050_CVGSClub.Controllers
             {
                 try
                 {
-                    _context.Update(memberEvents);
+                    gameReviews.MemberId = HttpContext.Session.GetString("userId");
+                    _context.Update(gameReviews);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MemberEventsExists(memberEvents.MemberEventsId))
+                    if (!GameReviewsExists(gameReviews.ReviewId))
                     {
                         return NotFound();
                     }
@@ -123,12 +125,12 @@ namespace PROG3050_CVGSClub.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Events, "EventId", "EventName", memberEvents.EventId);
-            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId", memberEvents.MemberId);
-            return View(memberEvents);
+            ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameName", gameReviews.GameId);
+            ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId", gameReviews.MemberId);
+            return View(gameReviews);
         }
 
-        // GET: MemberEvents/Delete/5
+        // GET: GameReviews/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,32 +138,32 @@ namespace PROG3050_CVGSClub.Controllers
                 return NotFound();
             }
 
-            var memberEvents = await _context.MemberEvents
-                .Include(m => m.Event)
-                .Include(m => m.Member)
-                .FirstOrDefaultAsync(m => m.MemberEventsId == id);
-            if (memberEvents == null)
+            var gameReviews = await _context.GameReviews
+                .Include(g => g.Game)
+                .Include(g => g.Member)
+                .FirstOrDefaultAsync(m => m.ReviewId == id);
+            if (gameReviews == null)
             {
                 return NotFound();
             }
 
-            return View(memberEvents);
+            return View(gameReviews);
         }
 
-        // POST: MemberEvents/Delete/5
+        // POST: GameReviews/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var memberEvents = await _context.MemberEvents.FindAsync(id);
-            _context.MemberEvents.Remove(memberEvents);
+            var gameReviews = await _context.GameReviews.FindAsync(id);
+            _context.GameReviews.Remove(gameReviews);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MemberEventsExists(int id)
+        private bool GameReviewsExists(int id)
         {
-            return _context.MemberEvents.Any(e => e.MemberEventsId == id);
+            return _context.GameReviews.Any(e => e.ReviewId == id);
         }
     }
 }

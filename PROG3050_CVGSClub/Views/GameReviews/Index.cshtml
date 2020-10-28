@@ -1,0 +1,46 @@
+﻿@model IEnumerable<PROG3050_CVGSClub.Models.GameReviews>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GameReview)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Game)
+            </th>
+            <th hidden>
+                @Html.DisplayNameFor(model => model.Member)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameReview)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Game.GameName)
+            </td>
+            <td hidden>
+                @Html.DisplayFor(modelItem => item.Member.MemberId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ReviewId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.ReviewId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
