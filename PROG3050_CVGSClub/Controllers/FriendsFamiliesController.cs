@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,8 @@ namespace PROG3050_CVGSClub.Controllers
         // No filter for the member ID yet
         public async Task<IActionResult> Index()
         {
-            var cVGSClubContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == "1");
+            string memberId = HttpContext.Session.GetString("userId");
+            var cVGSClubContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == memberId);
             return View(await cVGSClubContext.ToListAsync());
         }
 
@@ -49,7 +51,8 @@ namespace PROG3050_CVGSClub.Controllers
         // figure out how to leave them on the list, but disable the add button for them
         public async Task<IActionResult> Create()
         {
-            var friendContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == "1");
+            string memberId = HttpContext.Session.GetString("userId");
+            var friendContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == memberId);
             var cVGSClubContext = _context.Members.Where(a => friendContext.All(f => f.Member.MemberId != a.MemberId));
            
             return View(await cVGSClubContext.ToListAsync());
@@ -60,7 +63,8 @@ namespace PROG3050_CVGSClub.Controllers
         // Member now has a foreign connection to the friendID rather than the memberID
         public async Task<IActionResult> Add(string id, FriendsFamily friendsFamily)
         {
-            friendsFamily.MemberId = "1";
+            string memberId = HttpContext.Session.GetString("userId");
+            friendsFamily.MemberId = memberId;
             friendsFamily.FriendId = id;
             _context.Add(friendsFamily);
 
