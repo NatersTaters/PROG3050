@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -62,7 +63,9 @@ namespace PROG3050_CVGSClub.Controllers
         {
             if (ModelState.IsValid)
             {
+                wishLists.MemberId = HttpContext.Session.GetString("userId");
                 _context.Add(wishLists);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
