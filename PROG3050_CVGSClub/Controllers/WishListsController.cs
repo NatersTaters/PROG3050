@@ -74,6 +74,26 @@ namespace PROG3050_CVGSClub.Controllers
             return View(wishLists);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddWishlist(int id)
+        {
+            var wishList = await _context.WishLists.FindAsync(id);
+            if (wishList == null)
+            {
+                return NotFound();
+            }
+            string memberId = HttpContext.Session.GetString("userId");
+
+            WishLists wishlist = new WishLists();
+            wishlist.MemberId = memberId;
+            wishlist.GameId = id;
+
+            _context.Add(wishlist);
+            await _context.SaveChangesAsync();
+
+            return View(wishlist);
+        }
         // GET: WishLists/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
