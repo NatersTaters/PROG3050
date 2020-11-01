@@ -1,0 +1,31 @@
+﻿@model IEnumerable<PROG3050_CVGSClub.Models.GamesLibrary>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2 style="text-align:center">Games Library</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Game)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Game.GameName)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.GameId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

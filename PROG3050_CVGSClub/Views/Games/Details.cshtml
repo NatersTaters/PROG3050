@@ -1,0 +1,54 @@
+﻿@model PROG3050_CVGSClub.Models.Games
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Games</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.GameName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GameName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ListPrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ListPrice)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ContentRating)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ContentRating)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AvailablePlatforms)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AvailablePlatforms)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxPlayers)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MaxPlayers)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.GameId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
