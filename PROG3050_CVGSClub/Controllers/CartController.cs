@@ -8,26 +8,42 @@ using System.Linq;
 
 namespace PROG3050_CVGSClub.Controllers
 {
-    [Route("cart")]
     public class CartController : Controller
     {
-        [Route("index")]
+        private readonly CvgsClubContext _context;
+
+        public CartController(CvgsClubContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            ViewBag.cart = cart;
-            ViewBag.total = cart.Sum(item => item.Game.ListPrice * item.Quantity);
+            if (cart != null)
+            {
+                ViewBag.cart = cart;
+                ViewBag.total = cart.Sum(item => item.Game.ListPrice * item.Quantity);
+                ViewBag.tax = Math.Round(ViewBag.total * (decimal)0.13, 2);
+                ViewBag.final = ViewBag.total + ViewBag.tax;
+            }
+
             return View();
         }
 
-        [Route("buy/{id}")]
         public IActionResult Buy(int id)
         {
             ProductModel productModel = new ProductModel();
+            var games = _context.Games.FirstOrDefault(m => m.GameId == id);
             if (SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
             {
                 List<Item> cart = new List<Item>();
-                cart.Add(new Item { Game = productModel.find(id), Quantity = 1 });
+                cart.Add(new Item 
+                {
+                    Game = games, 
+                    Quantity = 1 
+                });
+
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             else
@@ -40,14 +56,18 @@ namespace PROG3050_CVGSClub.Controllers
                 }
                 else
                 {
-                    cart.Add(new Item { Game = productModel.find(id), Quantity = 1 });
+                    cart.Add(new Item
+                    {
+                        Game = games,
+                        Quantity = 1
+                    });
                 }
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
+
             return RedirectToAction("Index");
         }
 
-        [Route("remove/{id}")]
         public IActionResult Remove(int id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
@@ -63,10 +83,9 @@ namespace PROG3050_CVGSClub.Controllers
             for (int i = 0; i < cart.Count; i++)
             {
                 if (cart[i].Game.GameId.Equals(id))
-                {
                     return i;
-                }
             }
+
             return -1;
         }
 
