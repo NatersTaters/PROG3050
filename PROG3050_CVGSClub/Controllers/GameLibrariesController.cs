@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace PROG3050_CVGSClub.Controllers
         }
 
         // GET: GameLibraries
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var cvgsClubContext = _context.GamesLibrary.Include(g => g.Game).Include(g => g.Member);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,6 +23,7 @@ namespace PROG3050_CVGSClub.Controllers
         // GET: FriendsFamilies
         // This just shows all the friends and family
         // No filter for the member ID yet
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             string memberId = HttpContext.Session.GetString("userId");

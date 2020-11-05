@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,6 +21,7 @@ namespace PROG3050_CVGSClub.Controllers
         }
 
         // GET: WishLists
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var cVGSClubContext = _context.WishLists.Include(w => w.Game).Include(w => w.Member);

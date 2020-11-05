@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PROG3050_CVGSClub.Models;
 
@@ -12,6 +14,19 @@ namespace PROG3050_CVGSClub.Controllers
 	{
 		public IActionResult Index()
 		{
+			//var checkIfUserNull = HttpContext.User;
+			//if (checkIfUserNull == null)
+			//{
+			//	return View();
+			//}
+			//else
+			//{
+			//	var user = UserManager<IdentityUser>.GetUserAsync(HttpContext.User);
+			//	string userId = user.Id.ToString();
+			//	HttpContext.Session.SetString("userId", userId);
+			//	return View();
+			//}
+
 			return View();
 		}
 

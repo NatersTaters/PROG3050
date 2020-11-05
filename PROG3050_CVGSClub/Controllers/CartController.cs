@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using PROG3050_CVGSClub.Models;
 using PROG3050_CVGSClub.Helpers;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PROG3050_CVGSClub.Controllers
 {
@@ -17,6 +18,7 @@ namespace PROG3050_CVGSClub.Controllers
             _context = context;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");

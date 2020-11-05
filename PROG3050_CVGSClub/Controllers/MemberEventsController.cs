@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PROG3050_CVGSClub.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PROG3050_CVGSClub.Controllers
 {
@@ -20,6 +21,7 @@ namespace PROG3050_CVGSClub.Controllers
         }
 
         // GET: MemberEvents
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             string memberId = HttpContext.Session.GetString("userId");
