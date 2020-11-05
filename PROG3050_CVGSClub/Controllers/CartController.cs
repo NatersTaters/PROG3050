@@ -33,7 +33,6 @@ namespace PROG3050_CVGSClub.Controllers
 
         public IActionResult Buy(int id)
         {
-            ProductModel productModel = new ProductModel();
             var games = _context.Games.FirstOrDefault(m => m.GameId == id);
             if (SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
             {
