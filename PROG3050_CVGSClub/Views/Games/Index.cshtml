@@ -63,7 +63,7 @@
                     <a asp-action="Edit" asp-route-id="@item.GameId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.GameId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.GameId">Delete</a> |
-                    <a asp-route-id="@item.GameId">Add to Cart</a> |
+                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.GameId">Add to Cart</a> |
                     <a asp-route-id="@item.GameId">Add to Wish List</a> |
                     <a asp-route-id="@item.GameId">Rate</a> |
                     <a asp-route-id="@item.GameId">Review</a>

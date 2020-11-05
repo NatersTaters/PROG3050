@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+<!DOCTYPE html>
+
+
+<h2 style="text-align:center">Cart</h2>
+
+<body>
+    @if (ViewBag.cart != null && ViewBag.cart.Count > 0)
+    {
+        <h3>Cart Page</h3>
+        <table class="table">
+            <tr>
+                <th>Game Name</th>
+                <th>List Price</th>
+                <th>Quantity</th>
+                <th>Sum</th>
+                <th></th>
+            </tr>
+            @foreach (var item in ViewBag.cart)
+            {
+                <tr>
+                    <td>@item.Game.GameName</td>
+                    <td>@item.Game.ListPrice</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Game.ListPrice * item.Quantity)</td>
+                    <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Game.GameId">Remove</a></td>
+                </tr>
+            }
+            <tr>
+                <td align="right" colspan="3">Total Before Tax</td>
+                <td>
+                    @ViewBag.total
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td align="right" colspan="3">Tax at 13%</td>
+                <td>@ViewBag.tax</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td align="right" colspan="3">Final Cost</td>
+                <td>
+                    @ViewBag.final
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    }
+    else
+    {
+        <h4 style="text-align:center">Your Cart is Empty!</h4>
+    }
+    <br>
+    <a class="btn btn-success" role="button" asp-controller="Cart" asp-action="Index" style="float: right;">Confirm Order</a>
+    <a class="btn btn-primary" role="button" asp-controller="Games" asp-action="Index">Continue Shopping</a>
+
+</body>

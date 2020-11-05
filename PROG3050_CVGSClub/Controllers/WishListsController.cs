@@ -12,9 +12,9 @@ namespace PROG3050_CVGSClub.Controllers
 {
     public class WishListsController : Controller
     {
-        private readonly CVGSClubContext _context;
+        private readonly CvgsClubContext _context;
 
-        public WishListsController(CVGSClubContext context)
+        public WishListsController(CvgsClubContext context)
         {
             _context = context;
         }
