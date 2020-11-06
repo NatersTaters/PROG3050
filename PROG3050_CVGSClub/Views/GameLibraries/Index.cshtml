@@ -24,6 +24,7 @@
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.GameId">Details</a>
+                    <a asp-controller="GameReviews" asp-action="Create" asp-route-id="@item.GameId">Write a Review</a>
                 </td>
             </tr>
         }

@@ -14,19 +14,6 @@ namespace PROG3050_CVGSClub.Controllers
 	{
 		public IActionResult Index()
 		{
-			//var checkIfUserNull = HttpContext.User;
-			//if (checkIfUserNull == null)
-			//{
-			//	return View();
-			//}
-			//else
-			//{
-			//	var user = UserManager<IdentityUser>.GetUserAsync(HttpContext.User);
-			//	string userId = user.Id.ToString();
-			//	HttpContext.Session.SetString("userId", userId);
-			//	return View();
-			//}
-
 			return View();
 		}
 
