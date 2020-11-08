@@ -18,10 +18,6 @@ namespace PROG3050_CVGSClub.Controllers
             _context = context;
         }
 
-		public CreateMembersController()
-		{
-		}
-
 		// GET: CreateMembers
 		public async Task<IActionResult> Index()
         {
@@ -148,6 +144,7 @@ namespace PROG3050_CVGSClub.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //Check if the member exists
         private bool MembersExists(string id)
         {
             return _context.Members.Any(e => e.MemberId == id);
