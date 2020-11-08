@@ -19,6 +19,7 @@ namespace PROG3050_CVGSClub.Controllers
             _context = context;
         }
 
+        // GET: Cart
         [Authorize]
         public IActionResult Index()
         {
@@ -33,7 +34,8 @@ namespace PROG3050_CVGSClub.Controllers
 
             return View();
         }
-
+        
+        // Checkout/buy items in cart 
         public IActionResult Buy(int id)
         {
             var games = _context.Games.FirstOrDefault(m => m.GameId == id);
@@ -70,6 +72,7 @@ namespace PROG3050_CVGSClub.Controllers
             return RedirectToAction("Index");
         }
 
+        //Remove game from cart
         public IActionResult Remove(int id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
@@ -79,6 +82,7 @@ namespace PROG3050_CVGSClub.Controllers
             return RedirectToAction("Index");
         }
 
+        //Check if cart item exists
         private int isExist(int id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
