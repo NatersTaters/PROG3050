@@ -158,7 +158,8 @@ namespace PROG3050_CVGSClub.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        
+        // Check if event exists
         private bool GamesLibraryExists(int id)
         {
             return _context.GamesLibrary.Any(e => e.LibraryGameId == id);
