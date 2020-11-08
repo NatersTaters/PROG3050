@@ -6,6 +6,7 @@ using PROG3050_CVGSClub.Models;
 using PROG3050_CVGSClub.Helpers;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace PROG3050_CVGSClub.Controllers
 {
@@ -90,5 +91,20 @@ namespace PROG3050_CVGSClub.Controllers
             return -1;
         }
 
+        public async Task<IActionResult> Checkout()
+        {
+            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            for (int i = 0; i < cart.Count; i++)
+            {
+                GamesLibrary gamesLibrary = new GamesLibrary();
+                gamesLibrary.GameId = cart[i].Game.GameId;
+                gamesLibrary.MemberId = HttpContext.Session.GetString("userId");
+
+                GameLibrariesController gamesLibraryController = new GameLibrariesController(_context);
+                await gamesLibraryController.Create(gamesLibrary);
+            }
+
+            return View();
+        }
     }
 }
