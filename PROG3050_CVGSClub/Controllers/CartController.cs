@@ -95,6 +95,7 @@ namespace PROG3050_CVGSClub.Controllers
             return -1;
         }
 
+        //Checkout method that adds all items in the cart to the GameLibrary Table
         public async Task<IActionResult> Checkout()
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
