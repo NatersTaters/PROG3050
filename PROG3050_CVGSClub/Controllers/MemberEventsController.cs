@@ -161,6 +161,7 @@ namespace PROG3050_CVGSClub.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Check if Item exists
         private bool MemberEventsExists(int id)
         {
             return _context.MemberEvents.Any(e => e.MemberEventsId == id);
