@@ -182,6 +182,7 @@ namespace PROG3050_CVGSClub.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Check if Item exists
         private bool WishListsExists(int id)
         {
             return _context.WishLists.Any(e => e.WishId == id);
