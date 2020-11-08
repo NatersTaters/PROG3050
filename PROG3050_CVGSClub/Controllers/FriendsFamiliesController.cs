@@ -102,6 +102,7 @@ namespace PROG3050_CVGSClub.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Check if event exists
         private bool FriendsFamilyExists(int id)
         {
             return _context.FriendsFamily.Any(e => e.FriendFamilyId == id);
