@@ -99,14 +99,22 @@ namespace PROG3050_CVGSClub.Controllers
         public async Task<IActionResult> Checkout()
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            for (int i = 0; i < cart.Count; i++)
+            if (cart != null)
             {
-                GamesLibrary gamesLibrary = new GamesLibrary();
-                gamesLibrary.GameId = cart[i].Game.GameId;
-                gamesLibrary.MemberId = HttpContext.Session.GetString("userId");
+                ViewBag.cart = cart;
+                ViewBag.total = cart.Sum(item => item.Game.ListPrice * item.Quantity);
+                ViewBag.tax = Math.Round(ViewBag.total * (decimal)0.13, 2);
+                ViewBag.final = ViewBag.total + ViewBag.tax;
 
-                GameLibrariesController gamesLibraryController = new GameLibrariesController(_context);
-                await gamesLibraryController.Create(gamesLibrary);
+                for (int i = 0; i < cart.Count; i++)
+                {
+                    GamesLibrary gamesLibrary = new GamesLibrary();
+                    gamesLibrary.GameId = cart[i].Game.GameId;
+                    gamesLibrary.MemberId = HttpContext.Session.GetString("userId");
+
+                    GameLibrariesController gamesLibraryController = new GameLibrariesController(_context);
+                    await gamesLibraryController.Create(gamesLibrary);
+                }
             }
 
             return View();

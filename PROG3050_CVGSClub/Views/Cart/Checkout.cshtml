@@ -7,5 +7,24 @@
 <h2 style="text-align:center">Cart Checkout</h2>
 
 <body>
-	<p>Thank-you for your purchase! Your new games have been added to your Game Library, <a asp-area="" asp-controller="GameLibraries" asp-action="Index">Click Here</a> to view them!</p>
+	@if (ViewBag.cart != null && ViewBag.cart.Count > 0)
+	{
+		<p align="center">Thank-you for your purchase! Your new games have been added to your Game Library, <a asp-area="" asp-controller="GameLibraries" asp-action="Index">Click Here</a> to view them!</p>
+		<hr />
+		<table class="table-condensed" align="center">
+			@foreach (var item in ViewBag.cart)
+			{
+				<tr>
+					<td>@item.Game.GameName</td>
+				</tr>
+			}
+			<tr>
+				<td>Final Cost : @ViewBag.final</td>
+			</tr>
+		</table>
+	}
+	else
+	{
+		<h4 style="text-align:center">You haven't made any purchases!</h4>
+	}
 </body>
