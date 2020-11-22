@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using PROG3050_CVGSClub.Models;
-using PROG3050_CVGSClub.Helpers;
+using PROG3050_CVGSClub.Interfaces;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using PROG3050_CVGSClub.Helpers;
 
 namespace PROG3050_CVGSClub.Controllers
 {
