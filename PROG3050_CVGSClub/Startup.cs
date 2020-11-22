@@ -13,6 +13,7 @@ using PROG3050_CVGSClub.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PROG3050_CVGSClub.Models;
+using PROG3050_CVGSClub.Helpers;
 
 namespace PROG3050_CVGSClub
 {
@@ -31,6 +32,7 @@ namespace PROG3050_CVGSClub
 			// Add support for session variables
 			services.AddDistributedMemoryCache();
 			services.AddSession();
+			services.AddScoped<ICartDependency, CartDependency>();
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{

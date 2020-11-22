@@ -11,6 +11,7 @@ namespace PROG3050_CVGSClub.Controllers
     public class CartController : Controller
     {
         private readonly CvgsClubContext _context;
+        private readonly CartDependency _cartDependency = new CartDependency();
 
         public CartController(CvgsClubContext context)
         {
@@ -20,12 +21,14 @@ namespace PROG3050_CVGSClub.Controllers
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            double taxRate = 0.13;
+
             if (cart != null)
             {
                 ViewBag.cart = cart;
-                ViewBag.total = cart.Sum(item => item.Game.ListPrice * item.Quantity);
-                ViewBag.tax = Math.Round(ViewBag.total * (decimal)0.13, 2);
-                ViewBag.final = ViewBag.total + ViewBag.tax;
+                ViewBag.total = _cartDependency.TotalSum(cart); // Can this be put into a testable function?
+                ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total, taxRate);
+                ViewBag.final = _cartDependency.FinalCost(ViewBag.total, ViewBag.tax);
             }
 
             return View();
