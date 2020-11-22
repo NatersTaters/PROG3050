@@ -64,9 +64,8 @@
                     <a asp-action="Details" asp-route-id="@item.GameId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.GameId">Delete</a> |
                     <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.GameId">Add to Cart</a> |
-                    <a asp-route-id="@item.GameId">Add to Wish List</a> |
-                    <a asp-route-id="@item.GameId">Rate</a> |
-                    <a asp-route-id="@item.GameId">Review</a>
+                    <a asp-controller="WishLists" asp-action="AddWishlist" asp-route-id="@item.GameId">Add to Wishlist</a> |
+                    <a asp-controller="GameReviews" asp-action="Create" asp-route-id="@item.GameId">Review</a>
                 </td>
             </tr>
         }
