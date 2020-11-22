@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PROG3050_CVGSClub.Interfaces;
 using PROG3050_CVGSClub.Models;
 
 namespace PROG3050_CVGSClub.Controllers
@@ -14,10 +15,12 @@ namespace PROG3050_CVGSClub.Controllers
     public class WishListsController : Controller
     {
         private readonly CvgsClubContext _context;
+        IWishListService _wishlistService;
 
-        public WishListsController(CvgsClubContext context)
+        public WishListsController(CvgsClubContext context, IWishListService wishlistService)
         {
             _context = context;
+            _wishlistService = wishlistService;
         }
 
         // GET: WishLists
@@ -93,6 +96,9 @@ namespace PROG3050_CVGSClub.Controllers
 
             _context.Add(wishlist);
             await _context.SaveChangesAsync();
+
+            var wishLists = new WishListsController(_context, _wishlistService);
+            await wishLists.Create(_wishlistService.AddWishlist(id, memberId));
 
             return View(wishlist);
         }

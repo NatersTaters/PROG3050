@@ -19,34 +19,51 @@ namespace XUnitTestProject
             try { context.Entry(game).State = EntityState.Detached; }
             catch (Exception) { }
 
-            game = new Games()
-            {
-                GameId = r.Next(),
-                GameName = "GameTest",
-                ListPrice = 60,
-                ContentRating = "M",
-                Genre = "Adventure",
-                AvailablePlatforms = "PC",
-                MaxPlayers = "100"
-            };
-
             wishlist = new WishLists()
             {
                 WishId = r.Next(),
-                MemberId = "40",
+                MemberId = "TestMemberId",
                 GameId = r.Next(), 
                 Game = game,
             };
         }
 
         [Fact]
-        public void GoodWishlistAddition_AllowTheAddition()
+        public void GoodWishlistCreation_AllowTheCreation()
         {
             //Arrange
             Initialize();
 
             //Act
-            context.Games.Add(game);
+            context.WishLists.Add(wishlist);
+
+            //Assert
+            context.EFValidation();
+        }
+
+        [Fact]
+        public void NegativeWishList_ShouldStillWork()
+        {
+            //Arrange
+            Initialize();
+            wishlist.WishId = -5;
+
+            //Act
+            context.WishLists.Add(wishlist);
+
+            //Assert
+            context.EFValidation();
+        }
+
+        [Fact]
+        public void LargeGameId_ShouldPass()
+        {
+            //Arrange
+            Initialize();
+            wishlist.GameId = 5000;
+
+            //Act
+            context.WishLists.Add(wishlist);
 
             //Assert
             context.EFValidation();
