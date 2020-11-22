@@ -32,7 +32,6 @@ namespace PROG3050_CVGSClub
 			// Add support for session variables
 			services.AddDistributedMemoryCache();
 			services.AddSession();
-			services.AddScoped<ICartDependency, CartDependency>();
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{
