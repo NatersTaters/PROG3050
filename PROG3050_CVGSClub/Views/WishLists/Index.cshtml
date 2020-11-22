@@ -30,11 +30,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Member.MemberId)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.WishId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.WishId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.WishId">Delete</a>
-            </td>
         </tr>
 }
     </tbody>
