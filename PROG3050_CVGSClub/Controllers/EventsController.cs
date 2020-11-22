@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PROG3050_CVGSClub.Interfaces;
 using PROG3050_CVGSClub.Models;
 
 namespace PROG3050_CVGSClub.Controllers
@@ -15,10 +16,12 @@ namespace PROG3050_CVGSClub.Controllers
     public class EventsController : Controller
     {
         private readonly CvgsClubContext _context;
+        IEventService _eventService;
 
-        public EventsController(CvgsClubContext context)
+        public EventsController(CvgsClubContext context, IEventService eventService)
         {
             _context = context;
+            _eventService = eventService;
         }
 
         // GET: Events
@@ -129,18 +132,13 @@ namespace PROG3050_CVGSClub.Controllers
                 return NotFound();
             }
 
-            // Retrive the ID of the user currently signed in from the session object "userId"
-            string memberId = HttpContext.Session.GetString("userId");
+			// Retrive the ID of the user currently signed in from the session object "userId"
+			string memberId = HttpContext.Session.GetString("userId");
 
-            // Create a new MemberEvent object and add the memberId string reference object and the id supplied to this method
-            MemberEvents newMemberEvent = new MemberEvents();
-            newMemberEvent.MemberId = memberId;
-            newMemberEvent.EventId = id;
-
-            // Will call upon the Create method of the MemberEventsController and supply the method with the newMemberEvent object
-            // created above
-            var memberEvent = new MemberEventsController(_context);
-            await memberEvent.Create(newMemberEvent);
+			// Will call upon the Create method of the MemberEventsController and supply the method with the newMemberEvent object
+			// created in the interface file
+			var memberEvent = new MemberEventsController(_context);
+            await memberEvent.Create(_eventService.Subscribe(id, memberId));
 
             return View(events);
         }
