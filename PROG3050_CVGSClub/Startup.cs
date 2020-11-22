@@ -13,6 +13,7 @@ using PROG3050_CVGSClub.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PROG3050_CVGSClub.Models;
+using PROG3050_CVGSClub.Interfaces;
 
 namespace PROG3050_CVGSClub
 {
@@ -38,6 +39,8 @@ namespace PROG3050_CVGSClub
 				options.CheckConsentNeeded = context => false;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
+
+			services.Add(new ServiceDescriptor(typeof(IEventService), new EventService()));
 
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(
