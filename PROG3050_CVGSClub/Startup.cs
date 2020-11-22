@@ -13,7 +13,6 @@ using PROG3050_CVGSClub.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PROG3050_CVGSClub.Models;
-using PROG3050_CVGSClub.Helpers;
 
 namespace PROG3050_CVGSClub
 {
