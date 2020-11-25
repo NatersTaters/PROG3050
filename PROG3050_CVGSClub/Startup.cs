@@ -42,6 +42,7 @@ namespace PROG3050_CVGSClub
 
 			services.Add(new ServiceDescriptor(typeof(IEventService), new EventService()));
 			services.Add(new ServiceDescriptor(typeof(ICartDependency), new CartDependency()));
+			services.Add(new ServiceDescriptor(typeof(IWishListService), new WishListService()));
 
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(
