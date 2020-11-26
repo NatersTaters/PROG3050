@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,16 @@ namespace PROG3050_CVGSClub.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Games.ToListAsync());
+            string memberId = HttpContext.Session.GetString("userId");
+            string url = "/Identity/Account/Login";
+            if (memberId == null)
+            {
+                return LocalRedirect(url);
+            }
+            else
+            {
+                return View(await _context.Games.ToListAsync());
+            }
         }
 
         // GET: Games/Details/5

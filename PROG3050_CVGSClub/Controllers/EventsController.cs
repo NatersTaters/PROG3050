@@ -28,7 +28,16 @@ namespace PROG3050_CVGSClub.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events.ToListAsync());
+            string memberId = HttpContext.Session.GetString("userId");
+            string url = "/Identity/Account/Login";
+            if (memberId == null)
+            {
+                return LocalRedirect(url);
+            }
+            else
+            {
+                return View(await _context.Events.ToListAsync());
+            }
         }
 
         // GET: Events/Details/5
