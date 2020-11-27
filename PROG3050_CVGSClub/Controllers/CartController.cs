@@ -25,16 +25,27 @@ namespace PROG3050_CVGSClub.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            if (cart != null)
+            string memberId = HttpContext.Session.GetString("userId");
+            string url = "/Identity/Account/Login";
+            if (memberId == null)
             {
-                ViewBag.cart = cart;
-                ViewBag.total = _cartDependency.TotalSum(cart);
-                ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total);
-                ViewBag.final = _cartDependency.FinalCost(ViewBag.total, ViewBag.tax);
+                return LocalRedirect(url);
             }
+            else
+            {
+                var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+                double taxRate = 0.13;
 
-            return View();
+                if (cart != null)
+                {
+                    ViewBag.cart = cart;
+                    ViewBag.total = _cartDependency.TotalSum(cart);
+                    ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total, taxRate);
+                    ViewBag.final = _cartDependency.FinalCost(ViewBag.total, ViewBag.tax);
+                }
+
+                return View();
+            }
         }
         
         // Checkout/buy items in cart 
