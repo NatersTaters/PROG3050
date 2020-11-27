@@ -34,13 +34,11 @@ namespace PROG3050_CVGSClub.Controllers
             else
             {
                 var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-                double taxRate = 0.13;
-
                 if (cart != null)
                 {
                     ViewBag.cart = cart;
                     ViewBag.total = _cartDependency.TotalSum(cart);
-                    ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total, taxRate);
+                    ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total);
                     ViewBag.final = _cartDependency.FinalCost(ViewBag.total, ViewBag.tax);
                 }
 
