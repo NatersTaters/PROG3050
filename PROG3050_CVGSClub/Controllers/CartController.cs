@@ -25,27 +25,18 @@ namespace PROG3050_CVGSClub.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            string memberId = HttpContext.Session.GetString("userId");
-            string url = "/Identity/Account/Login";
-            if (memberId == null)
-            {
-                return LocalRedirect(url);
-            }
-            else
-            {
-                var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-                double taxRate = 0.13;
+            var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            double taxRate = 0.13;
 
-                if (cart != null)
-                {
-                    ViewBag.cart = cart;
-                    ViewBag.total = _cartDependency.TotalSum(cart); // Can this be put into a testable function?
-                    ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total, taxRate);
-                    ViewBag.final = _cartDependency.FinalCost(ViewBag.total, ViewBag.tax);
-                }
-
-                return View();
+            if (cart != null)
+            {
+                ViewBag.cart = cart;
+                ViewBag.total = _cartDependency.TotalSum(cart); // Can this be put into a testable function?
+                ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total, taxRate);
+                ViewBag.final = _cartDependency.FinalCost(ViewBag.total, ViewBag.tax);
             }
+
+            return View();
         }
         
         // Checkout/buy items in cart 
