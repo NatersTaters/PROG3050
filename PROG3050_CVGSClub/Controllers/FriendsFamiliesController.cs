@@ -55,7 +55,7 @@ namespace PROG3050_CVGSClub.Controllers
         {
             string memberId = HttpContext.Session.GetString("userId");
             var friendContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == memberId);
-            var cVGSClubContext = _context.Members.Where(a => friendContext.All(f => f.Member.MemberId != a.MemberId));
+            var cVGSClubContext = _context.Members.Where(a => friendContext.All(f => f.Member.MemberId != a.MemberId)).Where(a => a.MemberId != memberId);
            
             return View(await cVGSClubContext.ToListAsync());
         }

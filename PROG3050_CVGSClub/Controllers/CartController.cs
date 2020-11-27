@@ -26,13 +26,11 @@ namespace PROG3050_CVGSClub.Controllers
         public IActionResult Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            double taxRate = 0.13;
-
             if (cart != null)
             {
                 ViewBag.cart = cart;
-                ViewBag.total = _cartDependency.TotalSum(cart); // Can this be put into a testable function?
-                ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total, taxRate);
+                ViewBag.total = _cartDependency.TotalSum(cart);
+                ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total);
                 ViewBag.final = _cartDependency.FinalCost(ViewBag.total, ViewBag.tax);
             }
 
@@ -43,33 +41,16 @@ namespace PROG3050_CVGSClub.Controllers
         public IActionResult Buy(int id)
         {
             var games = _context.Games.FirstOrDefault(m => m.GameId == id);
-            if (SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart") == null)
-            {
-                List<Item> cart = new List<Item>();
-                cart.Add(new Item 
-                {
-                    Game = games, 
-                    Quantity = 1 
-                });
+            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
 
+            if (cart == null)
+            {
+                cart = _cartDependency.AddToCart(games, null);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             else
             {
-                List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-                int index = isExist(id);
-                if (index != -1)
-                {
-                    cart[index].Quantity++;
-                }
-                else
-                {
-                    cart.Add(new Item
-                    {
-                        Game = games,
-                        Quantity = 1
-                    });
-                }
+                cart = _cartDependency.BuyGame(id, cart, games);
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
 
@@ -80,44 +61,30 @@ namespace PROG3050_CVGSClub.Controllers
         public IActionResult Remove(int id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            int index = isExist(id);
-            cart.RemoveAt(index);
+            cart = _cartDependency.RemoveGame(id, cart);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             return RedirectToAction("Index");
         }
 
-        //Check if cart item exists
-        private int isExist(int id)
-        {
-            List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            for (int i = 0; i < cart.Count; i++)
-            {
-                if (cart[i].Game.GameId.Equals(id))
-                    return i;
-            }
-
-            return -1;
-        }
 
         //Checkout method that adds all items in the cart to the GameLibrary Table
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> CheckOut()
         {
+            var memberId = HttpContext.Session.GetString("userId");
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+
             if (cart != null)
             {
                 ViewBag.cart = cart;
-                ViewBag.total = cart.Sum(item => item.Game.ListPrice * item.Quantity);
-                ViewBag.tax = Math.Round(ViewBag.total * (decimal)0.13, 2);
-                ViewBag.final = ViewBag.total + ViewBag.tax;
+                ViewBag.total = _cartDependency.TotalSum(cart);
+                ViewBag.tax = _cartDependency.TaxAmount(ViewBag.total);
+                ViewBag.final = _cartDependency.FinalCost(ViewBag.total, ViewBag.tax);
 
+                // Do we really need to count the cart? There should only be one right?
                 for (int i = 0; i < cart.Count; i++)
                 {
-                    GamesLibrary gamesLibrary = new GamesLibrary();
-                    gamesLibrary.GameId = cart[i].Game.GameId;
-                    gamesLibrary.MemberId = HttpContext.Session.GetString("userId");
-
                     GameLibrariesController gamesLibraryController = new GameLibrariesController(_context);
-                    await gamesLibraryController.Create(gamesLibrary);
+                    await gamesLibraryController.Create(_cartDependency.GameLibrary(cart, memberId, i));
                 }
             }
 
