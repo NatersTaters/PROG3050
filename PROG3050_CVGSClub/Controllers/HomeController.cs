@@ -14,7 +14,16 @@ namespace PROG3050_CVGSClub.Controllers
 	{
 		public IActionResult Index()
 		{
-			return View();
+			string memberId = HttpContext.Session.GetString("userId");
+			string url = "/Identity/Account/Login";
+			if (memberId == null)
+			{
+				return LocalRedirect(url);
+			}
+			else
+			{
+				return View();
+			}
 		}
 
 		public IActionResult About()

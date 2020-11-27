@@ -27,8 +27,16 @@ namespace PROG3050_CVGSClub.Controllers
         public async Task<IActionResult> Index()
         {
             string memberId = HttpContext.Session.GetString("userId");
-            var cVGSClubContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == memberId);
-            return View(await cVGSClubContext.ToListAsync());
+            string url = "/Identity/Account/Login";
+            if (memberId == null)
+            {
+                return LocalRedirect(url);
+            }
+            else
+            {
+                var cVGSClubContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == memberId);
+                return View(await cVGSClubContext.ToListAsync());
+            }
         }
 
         // GET: FriendsFamilies/Details/5

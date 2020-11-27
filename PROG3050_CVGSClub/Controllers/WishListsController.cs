@@ -27,8 +27,17 @@ namespace PROG3050_CVGSClub.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var cVGSClubContext = _context.WishLists.Include(w => w.Game).Include(w => w.Member);
-            return View(await cVGSClubContext.ToListAsync());
+            string memberId = HttpContext.Session.GetString("userId");
+            string url = "/Identity/Account/Login";
+            if (memberId == null)
+            {
+                return LocalRedirect(url);
+            }
+            else
+            {
+                var cVGSClubContext = _context.WishLists.Include(w => w.Game).Include(w => w.Member);
+                return View(await cVGSClubContext.ToListAsync());
+            }
         }
 
         // GET: WishLists/Details/5
