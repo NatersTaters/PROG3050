@@ -62,6 +62,8 @@ namespace PROG3050_CVGSClub.Controllers
         {
             ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameName");
             ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId");
+            ViewBag.GameId = ViewData["GameId"];
+
             return View();
         }
 
@@ -81,6 +83,7 @@ namespace PROG3050_CVGSClub.Controllers
             }
             ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameName", gameReviews.GameId);
             ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId", gameReviews.MemberId);
+
             return View(gameReviews);
         }
 
