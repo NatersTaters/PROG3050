@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PROG3050_CVGSClub.Interfaces;
 using PROG3050_CVGSClub.Models;
 
 namespace PROG3050_CVGSClub.Controllers
@@ -14,7 +15,7 @@ namespace PROG3050_CVGSClub.Controllers
     public class FriendsFamiliesController : Controller
     {
         private readonly CvgsClubContext _context;
-
+        private readonly FamilyAndFriendService _familyContext = new FamilyAndFriendService();
         public FriendsFamiliesController(CvgsClubContext context)
         {
             _context = context;
@@ -62,6 +63,10 @@ namespace PROG3050_CVGSClub.Controllers
         public async Task<IActionResult> Create()
         {
             string memberId = HttpContext.Session.GetString("userId");
+            string url = "/Identity/Account/Login";
+            if (memberId == null || memberId == "null")
+                return LocalRedirect(url);
+
             var friendContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == memberId);
             var cVGSClubContext = _context.Members.Where(a => friendContext.All(f => f.Member.MemberId != a.MemberId)).Where(a => a.MemberId != memberId);
            
@@ -74,10 +79,7 @@ namespace PROG3050_CVGSClub.Controllers
         public async Task<IActionResult> Add(string id, FriendsFamily friendsFamily)
         {
             string memberId = HttpContext.Session.GetString("userId");
-            friendsFamily.MemberId = memberId;
-            friendsFamily.FriendId = id;
-            _context.Add(friendsFamily);
-
+            _familyContext.AddFamily(_context, friendsFamily, id, memberId);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

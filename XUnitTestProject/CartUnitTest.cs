@@ -63,7 +63,7 @@ namespace XUnitTestProject
 		}
 
 		// Call TaxAmount()
-		// Total is 100, tax is 0.13. Return 13
+		// Total is 100, tax rate is 0.13. Return 13
 		[Fact]
 		public void TaxAmount_Send100And13Percent_Return13()
 		{
@@ -140,7 +140,7 @@ namespace XUnitTestProject
 	
 		// Call FindGameIndex()
 		// Send id of game and the existing cart
-		// Return the correct index to remove (1)
+		// Return the correct index to remove (0)
 		[Fact]
 		public void FindGameIndex_SendGameIdAndCart_ReturnIndex1()
         {
