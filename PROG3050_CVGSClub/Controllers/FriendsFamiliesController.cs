@@ -60,12 +60,10 @@ namespace PROG3050_CVGSClub.Controllers
         // GET: FriendsFamilies/Create
         // Optional: Instead of filtering out all the already added members,
         // figure out how to leave them on the list, but disable the add button for them
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             string memberId = HttpContext.Session.GetString("userId");
-            string url = "/Identity/Account/Login";
-            if (memberId == null || memberId == "null")
-                return LocalRedirect(url);
 
             var friendContext = _context.FriendsFamily.Include(f => f.Member).Where(f => f.MemberId == memberId);
             var cVGSClubContext = _context.Members.Where(a => friendContext.All(f => f.Member.MemberId != a.MemberId)).Where(a => a.MemberId != memberId);
