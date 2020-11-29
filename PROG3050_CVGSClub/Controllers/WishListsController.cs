@@ -15,12 +15,11 @@ namespace PROG3050_CVGSClub.Controllers
     public class WishListsController : Controller
     {
         private readonly CvgsClubContext _context;
-        IWishListService _wishlistService;
+        private readonly WishListService _wishlistService = new WishListService();
 
-        public WishListsController(CvgsClubContext context, IWishListService wishlistService)
+        public WishListsController(CvgsClubContext context)
         {
             _context = context;
-            _wishlistService = wishlistService;
         }
 
         // GET: WishLists
@@ -77,9 +76,7 @@ namespace PROG3050_CVGSClub.Controllers
         {
             if (ModelState.IsValid)
             {
-                wishLists.MemberId = HttpContext.Session.GetString("userId");
                 _context.Add(wishLists);
-
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -88,28 +85,20 @@ namespace PROG3050_CVGSClub.Controllers
             return View(wishLists);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddWishlist(int id)
         {
-            var wishList = await _context.WishLists.FindAsync(id);
-            if (wishList == null)
+            var game = await _context.Games.FindAsync(id);
+            if (game == null)
             {
                 return NotFound();
             }
+
             string memberId = HttpContext.Session.GetString("userId");
 
-            WishLists wishlist = new WishLists();
-            wishlist.MemberId = memberId;
-            wishlist.GameId = id;
-
-            _context.Add(wishlist);
-            await _context.SaveChangesAsync();
-
-            var wishLists = new WishListsController(_context, _wishlistService);
+            var wishLists = new WishListsController(_context);
             await wishLists.Create(_wishlistService.AddWishlist(id, memberId));
 
-            return View(wishlist);
+            return RedirectToAction("Index");
         }
         // GET: WishLists/Edit/5
         public async Task<IActionResult> Edit(int? id)

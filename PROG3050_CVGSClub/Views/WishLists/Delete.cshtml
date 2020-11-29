@@ -6,22 +6,14 @@
 
 <h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this from your wishlist?</h3>
 <div>
-    <h4>WishLists</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Game)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Game.AvailablePlatforms)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Member)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Member.MemberId)
+            @Html.DisplayFor(model => model.Game.GameName)
         </dd>
     </dl>
     

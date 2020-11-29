@@ -57,10 +57,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.MaxPlayers)
                 </td>
-                <td>
-                    <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.GameId">Add to Cart</a> |
-                    <a asp-controller="WishLists" asp-action="AddWishlist" asp-route-id="@item.GameId">Add to Wishlist</a> 
-                </td>
+				<td>
+					<a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.GameId">Add to Cart</a> |
+					<a asp-controller="WishLists" asp-action="AddWishlist" asp-route-id="@item.GameId">Add to Wishlist</a>
+				</td>
             </tr>
         }
     </tbody>

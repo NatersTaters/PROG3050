@@ -12,22 +12,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Game)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Member)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Game.GameName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Member.MemberId)
-            </td>
-        </tr>
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Game.GameName)
+			</td>
+			<td style="text-align:center">
+				<a asp-action="Delete" asp-route-id="@item.WishId">Delete</a>
+			</td>
+		</tr>
 }
     </tbody>
 </table>
