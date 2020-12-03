@@ -5,7 +5,7 @@
 -- *******************************************
 
 -- Create the database
--- DROP DATABASE IF EXISTS cvgs_club;
+DROP DATABASE IF EXISTS cvgs_club;
 -- CREATE DATABASE cvgs_club;
 
 -- Select the database
@@ -50,12 +50,26 @@ CREATE TABLE members
     gender					CHAR(1)			DEFAULT NULL,			
     birth_date				DATE			DEFAULT NULL,
     receive_emails			BIT				DEFAULT 0,
-    mailing_address_id		INT				DEFAULT NULL,
-	shipping_address_id		INT				DEFAULT NULL,
     card_type				VARCHAR(50)		DEFAULT NULL,
     card_number				CHAR(16)		DEFAULT NULL,
     card_expires			CHAR(7)			DEFAULT NULL
 );
+
+INSERT dbo.members (member_id, display_name, first_name, last_name, email, password)
+	VALUES ('062e210f-8524-4098-9d04-cbd3c845bd3b', 'Naters_Taters', 'Nathaniel', 'Saunders', 'NSaunders4659@conestogac.on.ca', 'Nathan@1998')
+GO
+
+INSERT dbo.members (member_id, display_name, first_name, last_name, email, password)
+	VALUES ('1be5a660-85a6-4122-9cb6-49dc7bdb0dd1', 'Ashur', 'Leunard', 'Gervalla', 'LGervalla8340@conestogac.on.ca', 'Firefly@99')
+GO
+
+INSERT dbo.members (member_id, display_name, first_name, last_name, email, password)
+	VALUES ('4b73a887-3e2c-44fa-9396-e57976461297', 'Truong77', 'Andrew', 'Truong', 'ATruong7429@conestogac.on.ca', 'NotaPassword@54321')
+GO
+
+INSERT dbo.members (member_id, display_name, first_name, last_name, email, password)
+	VALUES ('8660ddb0-63ae-4d4e-83d2-f13c4bfd2cd5', 'Sym0ns', 'Chris', 'Symons', 'CSymons1806@conestogac.on.ca', 'Password@123')
+GO
 
 CREATE TABLE gameReviews
 (
@@ -84,21 +98,6 @@ CREATE TABLE gamesLibrary
 		REFERENCES games (game_id)
 );
 
-CREATE TABLE addresses
-(
-	address_id		INT				IDENTITY(1,1)		PRIMARY KEY		NOT NULL,
-    member_id		VARCHAR(60)		NOT NULL,
-    line1			VARCHAR(60)		NOT NULL,
-    line2			VARCHAR(60)		DEFAULT NULL,
-    city			VARCHAR(40)		NOT NULL,
-    province		VARCHAR(2)		NOT NULL,
-    postal_code		VARCHAR(10)		NOT NULL,
-    phone			VARCHAR(12)		NOT NULL,
-    CONSTRAINT addresses_fk_members
-		FOREIGN KEY (member_id)
-		REFERENCES members (member_id)
-);
-
 CREATE TABLE events
 (
 	event_id		INT			IDENTITY(1,1)	PRIMARY KEY		NOT NULL,
@@ -123,8 +122,9 @@ GO
 
 CREATE TABLE memberEvents
 (
-	event_id		INT			PRIMARY KEY		NOT NULL,
-	member_id		VARCHAR(60)	NOT NULL
+	member_events_id	INT			IDENTITY(1,1)	PRIMARY KEY		NOT NULL,
+	event_id			INT			NOT NULL,
+	member_id			VARCHAR(60)	NOT NULL
 	CONSTRAINT events_fk_members
 		FOREIGN KEY (member_id)
 		REFERENCES members (member_id),
