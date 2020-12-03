@@ -4,10 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<h2 style="text-align:center">Create a Review</h2>
 
-<h4>GameReviews</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -18,7 +16,7 @@
 				<span asp-validation-for="GameReview" class="text-danger"></span>
 			</div>
             <div class="form-group">
-                <label asp-for="GameReview" class="control-label"></label>
+                <label asp-for="GameReview" class="control-label">Game Review</label>
                 <input asp-for="GameReview" class="form-control" />
                 <span asp-validation-for="GameReview" class="text-danger"></span>
             </div>
@@ -30,6 +28,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+	<a asp-area="" asp-controller="GameLibraries" asp-action="Index">Back to Game Library</a>
 </div>
 

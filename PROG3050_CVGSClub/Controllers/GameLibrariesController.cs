@@ -32,7 +32,7 @@ namespace PROG3050_CVGSClub.Controllers
             }
             else
             {
-                var cvgsClubContext = _context.GamesLibrary.Include(g => g.Game).Include(g => g.Member);
+                var cvgsClubContext = _context.GamesLibrary.Include(g => g.Game).Include(g => g.Member).Where(g => g.MemberId == memberId);
                 return View(await cvgsClubContext.ToListAsync());
             }
         }

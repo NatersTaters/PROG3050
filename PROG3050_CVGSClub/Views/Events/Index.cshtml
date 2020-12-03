@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2 style="text-align:center">Events</h2>
 
 <p>
 	<a asp-area="" asp-controller="MemberEvents" asp-action="Index">View My Events</a>
@@ -13,19 +13,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EventName)
+                Event Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EventDate)
+                Event Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartTime)
+                Start Time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndTime)
+                End Time
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Capacity)
+                Capacity
             </th>
             <th></th>
         </tr>

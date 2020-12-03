@@ -76,10 +76,17 @@ namespace PROG3050_CVGSClub.Controllers
         {
             if (ModelState.IsValid)
             {
-                gameReviews.MemberId = HttpContext.Session.GetString("userId");
-                _context.Add(gameReviews);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if(gameReviews.GameReview == null)
+				{
+                    return View();
+				}
+                else
+				{
+                    gameReviews.MemberId = HttpContext.Session.GetString("userId");
+                    _context.Add(gameReviews);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["GameId"] = new SelectList(_context.Games, "GameId", "GameName", gameReviews.GameId);
             ViewData["MemberId"] = new SelectList(_context.Members, "MemberId", "MemberId", gameReviews.MemberId);

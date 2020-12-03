@@ -34,7 +34,7 @@ namespace PROG3050_CVGSClub.Controllers
             }
             else
             {
-                var cVGSClubContext = _context.WishLists.Include(w => w.Game).Include(w => w.Member);
+                var cVGSClubContext = _context.WishLists.Include(w => w.Game).Include(w => w.Member).Where(w => w.MemberId == memberId);
                 return View(await cVGSClubContext.ToListAsync());
             }
         }
