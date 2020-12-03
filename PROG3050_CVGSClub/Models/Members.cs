@@ -7,7 +7,6 @@ namespace PROG3050_CVGSClub.Models
     {
         public Members()
         {
-            Addresses = new HashSet<Addresses>();
             FriendsFamily = new HashSet<FriendsFamily>();
             GameReviews = new HashSet<GameReviews>();
             GamesLibrary = new HashSet<GamesLibrary>();
@@ -24,13 +23,10 @@ namespace PROG3050_CVGSClub.Models
         public string Gender { get; set; }
         public DateTime? BirthDate { get; set; }
         public bool? ReceiveEmails { get; set; }
-        public int? MailingAddressId { get; set; }
-        public int? ShippingAddressId { get; set; }
         public string CardType { get; set; }
         public string CardNumber { get; set; }
         public string CardExpires { get; set; }
 
-        public ICollection<Addresses> Addresses { get; set; }
         public ICollection<FriendsFamily> FriendsFamily { get; set; }
         public ICollection<GameReviews> GameReviews { get; set; }
         public ICollection<GamesLibrary> GamesLibrary { get; set; }

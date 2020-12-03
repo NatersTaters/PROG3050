@@ -82,7 +82,7 @@ namespace PROG3050_CVGSClub.Areas.Identity.Pages.Account.Manage
 
             public bool ReceiveEmails { get; set; }
 
-            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
             public string CardType { get; set; }
 
             [StringLength(16, ErrorMessage = "The {0} must be {1} characters long.")]

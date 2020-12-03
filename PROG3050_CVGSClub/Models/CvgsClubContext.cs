@@ -15,7 +15,6 @@ namespace PROG3050_CVGSClub.Models
         {
         }
 
-        public virtual DbSet<Addresses> Addresses { get; set; }
         public virtual DbSet<Events> Events { get; set; }
         public virtual DbSet<FriendsFamily> FriendsFamily { get; set; }
         public virtual DbSet<GameReviews> GameReviews { get; set; }
@@ -36,62 +35,6 @@ namespace PROG3050_CVGSClub.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Addresses>(entity =>
-            {
-                entity.HasKey(e => e.AddressId);
-
-                entity.ToTable("addresses");
-
-                entity.Property(e => e.AddressId).HasColumnName("address_id");
-
-                entity.Property(e => e.City)
-                    .IsRequired()
-                    .HasColumnName("city")
-                    .HasMaxLength(40)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Line1)
-                    .IsRequired()
-                    .HasColumnName("line1")
-                    .HasMaxLength(60)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Line2)
-                    .HasColumnName("line2")
-                    .HasMaxLength(60)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.MemberId)
-                    .IsRequired()
-                    .HasColumnName("member_id")
-                    .HasMaxLength(60)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Phone)
-                    .IsRequired()
-                    .HasColumnName("phone")
-                    .HasMaxLength(12)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.PostalCode)
-                    .IsRequired()
-                    .HasColumnName("postal_code")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Province)
-                    .IsRequired()
-                    .HasColumnName("province")
-                    .HasMaxLength(2)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Member)
-                    .WithMany(p => p.Addresses)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("addresses_fk_members");
-            });
-
             modelBuilder.Entity<Events>(entity =>
             {
                 entity.HasKey(e => e.EventId);
@@ -139,7 +82,7 @@ namespace PROG3050_CVGSClub.Models
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.FriendsFamily)
-                    .HasForeignKey(d => d.FriendId)
+                    .HasForeignKey(d => d.MemberId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("friends_family_fk_members");
             });
@@ -186,7 +129,7 @@ namespace PROG3050_CVGSClub.Models
                 entity.ToTable("games");
 
                 entity.HasIndex(e => e.GameName)
-                    .HasName("UQ__games__CDFC05C41D7B16F2")
+                    .HasName("UQ__games__CDFC05C495303A8E")
                     .IsUnique();
 
                 entity.Property(e => e.GameId).HasColumnName("game_id");
@@ -340,8 +283,6 @@ namespace PROG3050_CVGSClub.Models
                     .HasMaxLength(60)
                     .IsUnicode(false);
 
-                entity.Property(e => e.MailingAddressId).HasColumnName("mailing_address_id");
-
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("password")
@@ -351,8 +292,6 @@ namespace PROG3050_CVGSClub.Models
                 entity.Property(e => e.ReceiveEmails)
                     .HasColumnName("receive_emails")
                     .HasDefaultValueSql("((0))");
-
-                entity.Property(e => e.ShippingAddressId).HasColumnName("shipping_address_id");
             });
 
             modelBuilder.Entity<WishLists>(entity =>
