@@ -82,7 +82,7 @@ namespace PROG3050_CVGSClub.Models
 
                 entity.HasOne(d => d.Member)
                     .WithMany(p => p.FriendsFamily)
-                    .HasForeignKey(d => d.MemberId)
+                    .HasForeignKey(d => d.FriendId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("friends_family_fk_members");
             });
