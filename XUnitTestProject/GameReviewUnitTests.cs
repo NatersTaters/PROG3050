@@ -42,8 +42,6 @@ namespace XUnitTestProject
 				Gender = "M",
 				BirthDate = DateTime.Now,
 				ReceiveEmails = false,
-				MailingAddressId = null,
-				ShippingAddressId = null,
 				CardType = "TestCard",
 				CardNumber = "1234567890987654",
 				CardExpires = "05/24"
